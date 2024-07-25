@@ -1,10 +1,9 @@
 'use client'
 
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useAction } from 'next-safe-action/hooks'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
-import Link from 'next/link'
-import { useAction } from 'next-safe-action/hooks'
 
 import { Button } from '@/components/ui/button'
 import {
@@ -16,45 +15,42 @@ import {
   FormMessage,
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
-import { LoginSchema } from '@/types/login-schema'
-import AuthCard from './auth-card'
-import { emailSignIn } from '@/server/actions/email-signin'
 import { cn } from '@/lib/utils'
+import { reset } from '@/server/actions/password-reset'
+import { ResetSchema } from '@/types/reset-schema'
+import { useState } from 'react'
+import AuthCard from './auth-card'
 import FormError from './form-error'
 import FormSuccess from './form-success'
-import { useState } from 'react'
 
-export default function LoginForms() {
-  const form = useForm<z.infer<typeof LoginSchema>>({
-    resolver: zodResolver(LoginSchema),
+export default function ResetForm() {
+  const form = useForm<z.infer<typeof ResetSchema>>({
+    resolver: zodResolver(ResetSchema),
     defaultValues: {
       email: '',
-      password: '',
     },
   })
 
   const [error, setError] = useState('')
   const [success, setSuccess] = useState('')
 
-  const { execute, status } = useAction(emailSignIn, {
+  const { execute, status } = useAction(reset, {
     onSuccess(data) {
       if (data.data?.error) setError(data.data?.error)
       if (data.data?.success) setSuccess(data.data?.success)
     },
   })
 
-  function onSubmit(values: z.infer<typeof LoginSchema>) {
+  function onSubmit(values: z.infer<typeof ResetSchema>) {
     execute(values)
   }
 
   return (
     <div className="container grid place-content-center mt-14">
       <AuthCard
-        cardTitle="Sign in"
-        cardDesc="to continue using Home"
-        backButtonHref="/auth/register"
-        backButtonLabel="Create a new account"
-        showSocials={true}
+        cardTitle="Forgot your password?"
+        backButtonHref="/auth/login"
+        backButtonLabel="Back to login"
       >
         <Form {...form}>
           <form
@@ -70,46 +66,31 @@ export default function LoginForms() {
                     <FormLabel>Email</FormLabel>
                     <FormControl>
                       <Input
-                        placeholder="Enter email address"
+                        placeholder="Enter new email"
                         {...field}
                         type="email"
                         autoComplete="email"
+                        disabled={status === 'executing'}
                       />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               />
-              <FormField
-                control={form.control}
-                name="password"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Password</FormLabel>
-                    <FormControl>
-                      <Input
-                        placeholder="**********"
-                        {...field}
-                        type="password"
-                        autoComplete="current-password"
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+
               <FormSuccess message={success} />
               <FormError message={error} />
             </div>
-            <Button asChild variant="link" size="sm" className="w-fit text-xs">
-              <Link href="/auth/reset">Forgot your password?</Link>
-            </Button>
+
             <Button
               type="submit"
               disabled={status === 'executing' ? true : false}
-              className={cn(status === 'executing' ? 'animate-pulse' : '')}
+              className={cn(
+                status === 'executing' ? 'animate-pulse' : '',
+                'mt-4'
+              )}
             >
-              Continue
+              Reset Password
             </Button>
           </form>
         </Form>

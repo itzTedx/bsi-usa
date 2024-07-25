@@ -36,7 +36,12 @@ export default function AuthCard({
         {cardDesc && <CardDescription>{cardDesc}</CardDescription>}
       </CardHeader>
       <CardContent>
-        {showSocials && <Socials />} <Separator className="my-5 w-80 mx-auto" />
+        {showSocials && (
+          <>
+            <Socials />
+            <Separator className="my-5 w-80 mx-auto" />
+          </>
+        )}
         {children}
       </CardContent>
 

@@ -49,7 +49,7 @@ export default function RegisterFom() {
   }
 
   return (
-    <div className="container grid place-content-center mt-24">
+    <div className="container grid place-content-center mt-12">
       <AuthCard
         cardTitle="Create a new account"
         cardDesc="to continue using Home"

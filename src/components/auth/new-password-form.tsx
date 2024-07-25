@@ -1,10 +1,9 @@
 'use client'
 
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useAction } from 'next-safe-action/hooks'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
-import Link from 'next/link'
-import { useAction } from 'next-safe-action/hooks'
 
 import { Button } from '@/components/ui/button'
 import {
@@ -16,19 +15,18 @@ import {
   FormMessage,
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
-import { LoginSchema } from '@/types/login-schema'
-import AuthCard from './auth-card'
-import { emailSignIn } from '@/server/actions/email-signin'
 import { cn } from '@/lib/utils'
+import { newPassword } from '@/server/actions/new-password'
+import { NewPasswordSchema } from '@/types/new-password-schema'
+import { useState } from 'react'
+import AuthCard from './auth-card'
 import FormError from './form-error'
 import FormSuccess from './form-success'
-import { useState } from 'react'
 
-export default function LoginForms() {
-  const form = useForm<z.infer<typeof LoginSchema>>({
-    resolver: zodResolver(LoginSchema),
+export default function NewPasswordForm() {
+  const form = useForm<z.infer<typeof NewPasswordSchema>>({
+    resolver: zodResolver(NewPasswordSchema),
     defaultValues: {
-      email: '',
       password: '',
     },
   })
@@ -36,25 +34,24 @@ export default function LoginForms() {
   const [error, setError] = useState('')
   const [success, setSuccess] = useState('')
 
-  const { execute, status } = useAction(emailSignIn, {
+  const { execute, status } = useAction(newPassword, {
     onSuccess(data) {
       if (data.data?.error) setError(data.data?.error)
       if (data.data?.success) setSuccess(data.data?.success)
     },
   })
 
-  function onSubmit(values: z.infer<typeof LoginSchema>) {
+  function onSubmit(values: z.infer<typeof NewPasswordSchema>) {
     execute(values)
   }
 
   return (
     <div className="container grid place-content-center mt-14">
       <AuthCard
-        cardTitle="Sign in"
+        cardTitle="Enter a new password"
         cardDesc="to continue using Home"
-        backButtonHref="/auth/register"
-        backButtonLabel="Create a new account"
-        showSocials={true}
+        backButtonHref="/auth/login"
+        backButtonLabel="Back to login"
       >
         <Form {...form}>
           <form
@@ -64,52 +61,36 @@ export default function LoginForms() {
             <div className="gap-y-4 flex flex-col">
               <FormField
                 control={form.control}
-                name="email"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Email</FormLabel>
-                    <FormControl>
-                      <Input
-                        placeholder="Enter email address"
-                        {...field}
-                        type="email"
-                        autoComplete="email"
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
                 name="password"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Password</FormLabel>
                     <FormControl>
                       <Input
-                        placeholder="**********"
+                        placeholder="Enter new password"
                         {...field}
                         type="password"
-                        autoComplete="current-password"
+                        disabled={status === 'executing'}
                       />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               />
+
               <FormSuccess message={success} />
               <FormError message={error} />
             </div>
-            <Button asChild variant="link" size="sm" className="w-fit text-xs">
-              <Link href="/auth/reset">Forgot your password?</Link>
-            </Button>
+
             <Button
               type="submit"
               disabled={status === 'executing' ? true : false}
-              className={cn(status === 'executing' ? 'animate-pulse' : '')}
+              className={cn(
+                status === 'executing' ? 'animate-pulse' : '',
+                'mt-4'
+              )}
             >
-              Continue
+              Reset Password
             </Button>
           </form>
         </Form>
