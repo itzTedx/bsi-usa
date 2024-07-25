@@ -1,3 +1,7 @@
-export default async function Home() {
-  return <div>Homepage</div>
+import { redirect } from 'next/navigation'
+
+const Home = () => {
+  redirect('/studio')
 }
+
+export default Home

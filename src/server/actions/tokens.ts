@@ -2,7 +2,13 @@
 
 import { eq } from 'drizzle-orm'
 import { db } from '..'
-import { emailTokens, passwordResetToken, users } from '../schema'
+import {
+  emailTokens,
+  passwordResetToken,
+  twoFactorTokens,
+  users,
+} from '../schema'
+import crypto from 'crypto'
 
 export const getVerificationTokenByEmail = async (email: string) => {
   try {
@@ -84,7 +90,7 @@ export const generatePasswordResetToken = async (email: string) => {
   try {
     const token = crypto.randomUUID()
 
-    const expires = new Date(new Date().getTime() * 3600 * 1000)
+    const expires = new Date(new Date().getTime() + 3600 * 1000)
 
     const existingToken = await getPasswordResetTokenByEmail(email)
     if (existingToken) {
@@ -92,6 +98,7 @@ export const generatePasswordResetToken = async (email: string) => {
         .delete(passwordResetToken)
         .where(eq(passwordResetToken.id, emailTokens.id))
     }
+
     const passwordResetTokens = await db
       .insert(passwordResetToken)
       .values({
@@ -103,6 +110,57 @@ export const generatePasswordResetToken = async (email: string) => {
 
     return passwordResetTokens
   } catch (e) {
+    return console.log(e)
+  }
+}
+
+export const getTwoFactorTokenByEmail = async (email: string) => {
+  try {
+    const twoFactorToken = await db.query.twoFactorTokens.findFirst({
+      where: eq(twoFactorTokens.email, email),
+    })
+
+    return twoFactorToken
+  } catch {
     return null
+  }
+}
+
+export const getTwoFactorTokenByToken = async (token: string) => {
+  try {
+    const passwordResetToken = await db.query.twoFactorTokens.findFirst({
+      where: eq(twoFactorTokens.token, token),
+    })
+    return passwordResetToken
+  } catch {
+    return null
+  }
+}
+
+export const generateTwoFactorToken = async (email: string) => {
+  try {
+    const token = crypto.randomInt(100_000, 1_000_000).toString()
+
+    const expires = new Date(new Date().getTime() + 3600 * 1000)
+
+    const existingToken = await getTwoFactorTokenByEmail(email)
+    if (existingToken) {
+      await db
+        .delete(twoFactorTokens)
+        .where(eq(twoFactorTokens.id, existingToken.id))
+    }
+
+    const twoFactorToken = await db
+      .insert(twoFactorTokens)
+      .values({
+        email,
+        token,
+        expires,
+      })
+      .returning()
+
+    return twoFactorToken
+  } catch (e) {
+    return console.log(e)
   }
 }

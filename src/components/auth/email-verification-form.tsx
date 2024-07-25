@@ -24,9 +24,9 @@ export default function EmailVerificationForm() {
       if (data.error) {
       }
       if (data.success) {
+        toast.success(success)
         setSuccess(data.success)
         router.push('/auth/login')
-        toast.success(success)
       }
     })
   }, [])

@@ -22,6 +22,7 @@ import { useState } from 'react'
 import AuthCard from './auth-card'
 import FormError from './form-error'
 import FormSuccess from './form-success'
+import { useSearchParams } from 'next/navigation'
 
 export default function NewPasswordForm() {
   const form = useForm<z.infer<typeof NewPasswordSchema>>({
@@ -30,6 +31,8 @@ export default function NewPasswordForm() {
       password: '',
     },
   })
+  const searchParams = useSearchParams()
+  const token = searchParams.get('token')
 
   const [error, setError] = useState('')
   const [success, setSuccess] = useState('')
@@ -37,12 +40,14 @@ export default function NewPasswordForm() {
   const { execute, status } = useAction(newPassword, {
     onSuccess(data) {
       if (data.data?.error) setError(data.data?.error)
-      if (data.data?.success) setSuccess(data.data?.success)
+      if (data.data?.success) {
+        setSuccess(data.data?.success)
+      }
     },
   })
 
   function onSubmit(values: z.infer<typeof NewPasswordSchema>) {
-    execute(values)
+    execute({ password: values.password, token })
   }
 
   return (

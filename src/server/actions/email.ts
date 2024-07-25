@@ -9,9 +9,9 @@ const domain = getBaseURL()
 export const sendVerificationEmail = async (email: string, token: string) => {
   const confirmLink = `${domain}/auth/new-verification?token=${token}`
   const { data, error } = await resend.emails.send({
-    from: 'Acme <onboarding@resend.dev>',
+    from: 'BSI <onboarding@digitaldesk.ae>',
     to: email,
-    subject: 'Sprout and Scribble - Confirmation Link',
+    subject: 'BSI - Confirmation Link',
     html: `<p>Click to <a href='${confirmLink}'>confirm your email.</a></p>`,
   })
 
@@ -25,13 +25,31 @@ export const sendVerificationEmail = async (email: string, token: string) => {
 export const sendPasswordResetEmail = async (email: string, token: string) => {
   const confirmLink = `${domain}/auth/new-password?token=${token}`
   const { data, error } = await resend.emails.send({
-    from: 'Acme <onboarding@resend.dev>',
+    from: 'BSI <onboarding@digitaldesk.ae>',
     to: email,
-    subject: 'Sprout and Scribble - Confirmation Link',
+    subject: 'BSI - Password Reset Link',
     html: `<p>Click here to <a href='${confirmLink}'>reset your password.</a></p>`,
   })
 
   if (error) return console.log(error)
+
+  if (data) return data
+}
+
+export const sendTwoFactorTokenByEmail = async (
+  email: string,
+  token: string
+) => {
+  const { data, error } = await resend.emails.send({
+    from: 'BSI <onboarding@digitaldesk.ae>',
+    to: email,
+    subject: 'BSI - Your two factor token',
+    html: `<p>Your Confirmation Code: ${token}</p>`,
+  })
+
+  if (error) {
+    return console.log(error)
+  }
 
   if (data) return data
 }
