@@ -20,7 +20,7 @@ export default async function NewProductPage() {
           <Link href="/studio/products">Back to products</Link>
         </Button>
       </div>
-      <div className="flex flex-1 p-6 rounded-lg border border-dashed shadow-sm">
+      <div className="flex flex-1 p-2 md:p-6 rounded-lg border border-dashed shadow-sm">
         <ProductForm />
       </div>
     </>
