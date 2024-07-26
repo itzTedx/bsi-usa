@@ -22,4 +22,4 @@ export const NAV_LINKS = [
     href: '/studio/analytics',
     icon: <LineChart className="h-4 w-4" />,
   },
-]
+] as const

@@ -18,7 +18,7 @@ export default async function Nav({ children }: { children: React.ReactNode }) {
       <div className="grid min-h-screen w-full md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]">
         <Sidebar />
         <div className="flex flex-col">
-          <header className="flex h-14 items-center gap-4 border-b bg-muted/40 px-4 lg:h-[60px] lg:px-6">
+          <header className="flex h-14 items-center gap-4 border-b bg-muted/50 px-4 lg:h-[60px] lg:px-6 sticky top-0 backdrop-blur-xl z-50">
             <Sheet>
               <SheetTrigger asChild>
                 <Button
@@ -33,7 +33,7 @@ export default async function Nav({ children }: { children: React.ReactNode }) {
               <SidebarMob />
             </Sheet>
             <div className="w-full flex-1">
-              <form>
+              {/* <form>
                 <div className="relative">
                   <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
                   <Input
@@ -42,7 +42,7 @@ export default async function Nav({ children }: { children: React.ReactNode }) {
                     className="w-full appearance-none bg-background pl-8 shadow-none md:w-2/3 lg:w-1/3"
                   />
                 </div>
-              </form>
+              </form> */}
             </div>
             <div className="flex items-center gap-4">
               <ThemeToggle />

@@ -6,6 +6,8 @@ import {
   primaryKey,
   integer,
   pgEnum,
+  serial,
+  real,
 } from 'drizzle-orm/pg-core'
 import { AdapterAccountType } from 'next-auth/adapters'
 
@@ -101,3 +103,11 @@ export const twoFactorTokens = pgTable(
     }),
   })
 )
+
+export const products = pgTable('products', {
+  id: serial('id').primaryKey(),
+  title: text('title').notNull(),
+  description: text('description').notNull(),
+  price: real('price').notNull(),
+  createdAt: timestamp('createdAt').defaultNow(),
+})

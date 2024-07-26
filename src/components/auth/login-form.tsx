@@ -30,6 +30,7 @@ import {
   InputOTPSeparator,
   InputOTPSlot,
 } from '@/components/ui/input-otp'
+import { useRouter } from 'next/navigation'
 
 export default function LoginForms() {
   const form = useForm<z.infer<typeof LoginSchema>>({
@@ -40,6 +41,7 @@ export default function LoginForms() {
     },
   })
 
+  const router = useRouter()
   const [error, setError] = useState('')
   const [success, setSuccess] = useState('')
   const [showTwoFactor, setShowTwoFactor] = useState(false)
@@ -51,6 +53,7 @@ export default function LoginForms() {
         setShowTwoFactor(true)
       }
       if (data.data?.success) setSuccess(data.data?.success)
+      router.push('/studio')
     },
   })
 
