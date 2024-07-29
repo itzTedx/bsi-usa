@@ -8,9 +8,25 @@ export const ProductSchema = z.object({
   description: z
     .string()
     .min(3, { message: 'Description must be at least 3 characters long' }),
-  price: z.coerce
-    .number()
-    .positive({ message: 'Price should be in positive digit' }),
+  editMode: z.boolean().optional(),
+  tag: z.array(z.string()).optional(),
+  images: z.array(
+    z.object(
+      {
+        url: z.string().refine((url) => url.search('blob:') !== 0, {
+          message: 'Please wait for the image to upload',
+        }),
+        size: z.number(),
+        key: z.string().optional(),
+        id: z.number().optional(),
+        name: z.string({ message: 'Please upload image' }),
+      },
+      { message: 'Image is required' }
+    )
+  ),
+  // price: z.coerce
+  //   .number()
+  //   .positive({ message: 'Price should be in positive digit' }),
 })
 
 export type zProductSchema = z.infer<typeof ProductSchema>

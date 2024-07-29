@@ -29,9 +29,8 @@ import Link from 'next/link'
 
 type ProductColumn = {
   title: string
-  price: number
   image: string
-  variants: any
+  // created: Date
   id: number
 }
 
@@ -89,23 +88,23 @@ export const columns: ColumnDef<ProductColumn>[] = [
     accessorKey: 'title',
     header: 'Product Title',
   },
-  {
-    accessorKey: 'variants',
-    header: 'Variants',
-  },
-  {
-    accessorKey: 'price',
-    header: 'Price',
-    cell: ({ row }) => {
-      const price = parseFloat(row.getValue('price'))
-      const formatted = new Intl.NumberFormat('en-US', {
-        currency: 'USD',
-        style: 'currency',
-      }).format(price)
+  // {
+  //   accessorKey: 'created',
+  //   header: 'Created At',
+  // },
+  // {
+  //   accessorKey: 'price',
+  //   header: 'Price',
+  //   cell: ({ row }) => {
+  //     const price = parseFloat(row.getValue('price'))
+  //     const formatted = new Intl.NumberFormat('en-US', {
+  //       currency: 'USD',
+  //       style: 'currency',
+  //     }).format(price)
 
-      return <div>{formatted}</div>
-    },
-  },
+  //     return <div>{formatted}</div>
+  //   },
+  // },
   {
     accessorKey: 'image',
     header: 'Image',

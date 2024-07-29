@@ -49,7 +49,7 @@ export function DataTable<TData, TValue>({
 
   return (
     <>
-      <div className="">
+      <div className="mb-3">
         <Input
           placeholder="Search Product..."
           value={(table.getColumn('title')?.getFilterValue() as string) ?? ''}

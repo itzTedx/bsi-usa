@@ -16,14 +16,18 @@ export default async function ProductsPage() {
   }
 
   const products = await db.query.products.findMany({
+    with: {
+      productImages: true,
+      productTags: true,
+    },
+
     orderBy: (products, { desc }) => [desc(products.id)],
   })
   const dataTable = products.map((product) => {
     return {
       id: product.id,
       title: product.title,
-      price: product.price,
-      variants: [],
+      created: product.createdAt,
       image: '/placeholder.png',
     }
   })

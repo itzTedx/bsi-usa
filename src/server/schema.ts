@@ -12,6 +12,7 @@ import {
 import { AdapterAccountType } from 'next-auth/adapters'
 
 import { createId } from '@paralleldrive/cuid2'
+import { InferSelectModel, relations } from 'drizzle-orm'
 
 export const RoleEnum = pgEnum('roles', ['user', 'admin'])
 
@@ -104,10 +105,55 @@ export const twoFactorTokens = pgTable(
   })
 )
 
+// Products Schema
 export const products = pgTable('products', {
   id: serial('id').primaryKey(),
   title: text('title').notNull(),
   description: text('description').notNull(),
-  price: real('price').notNull(),
   createdAt: timestamp('createdAt').defaultNow(),
 })
+
+export const productImages = pgTable('product_images', {
+  id: serial('id').primaryKey(),
+  url: text('url').notNull(),
+  size: real('size').notNull(),
+  name: text('title').notNull(),
+  order: real('order').notNull(),
+
+  productId: serial('productId')
+    .notNull()
+    .references(() => products.id, { onDelete: 'cascade' }),
+})
+
+export const productTags = pgTable('product_tags', {
+  id: serial('id').primaryKey(),
+  tag: text('url').notNull(),
+
+  productId: serial('productId')
+    .notNull()
+    .references(() => products.id, { onDelete: 'cascade' }),
+})
+
+export const productRelations = relations(products, ({ many }) => ({
+  productImages: many(productImages, { relationName: 'productImages' }),
+  productTags: many(productTags, { relationName: 'productTags' }),
+}))
+
+export const productImagesRelations = relations(
+  productImages,
+  ({ many, one }) => ({
+    product: one(products, {
+      fields: [productImages.productId],
+      references: [products.id],
+      relationName: 'productImages',
+    }),
+  })
+)
+
+export const productTagsRelations = relations(productTags, ({ many, one }) => ({
+  product: one(products, {
+    fields: [productTags.productId],
+    references: [products.id],
+    relationName: 'productTags',
+  }),
+}))

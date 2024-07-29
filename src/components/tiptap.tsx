@@ -72,7 +72,7 @@ const Tiptap = ({ val }: { val: string }) => {
     editorProps: {
       attributes: {
         class:
-          'min-h-[80px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 tiptap-editor',
+          'min-h-[120px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 tiptap-editor',
       },
     },
     content: val,
@@ -92,35 +92,38 @@ const Tiptap = ({ val }: { val: string }) => {
         <div className="flex items-start gap-1 ">
           <Toggle
             variant="outline"
+            tabIndex={-1}
             size="sm"
             aria-label="Toggle bold"
             pressed={editor.isActive('bold')}
             onPressedChange={() => editor.chain().focus().toggleBold().run()}
           >
-            <Bold className="h-4 w-4" />
+            <Bold className="w-4 h-4" />
           </Toggle>
           <Toggle
             variant="outline"
+            tabIndex={-1}
             size="sm"
             aria-label="Toggle italic"
             pressed={editor.isActive('italic')}
             onPressedChange={() => editor.chain().focus().toggleItalic().run()}
           >
-            <Italic className="h-4 w-4" />
+            <Italic className="w-4 h-4" />
           </Toggle>
           <Toggle
             variant="outline"
             size="sm"
+            tabIndex={-1}
             aria-label="Toggle underline"
             pressed={editor.isActive('underline')}
             onPressedChange={() =>
               editor.chain().focus().toggleUnderline().run()
             }
           >
-            <UnderlineIcon className="h-4 w-4" />
+            <UnderlineIcon className="w-4 h-4" />
           </Toggle>
 
-          {/* <Separator orientation="vertical" className="h-9 mx-1" />
+          {/* <Separator orientation="vertical" className="mx-1 h-9" />
 
           <div className="control-group">
             <div className="flex gap-1">
@@ -163,31 +166,34 @@ const Tiptap = ({ val }: { val: string }) => {
             </div>
           </div> */}
 
-          <Separator orientation="vertical" className="h-9 mx-1" />
+          <Separator orientation="vertical" className="mx-1 h-9" />
 
           <Toggle
             variant="outline"
             size="sm"
+            disabled={!editor.can().chain().focus().undo().run()}
             aria-label="undo"
             pressed={editor.isActive('undo')}
             onPressedChange={() => editor.chain().focus().undo().run()}
           >
-            <Undo className="h-4 w-4" />
+            <Undo className="w-4 h-4" />
           </Toggle>
           <Toggle
             variant="outline"
             size="sm"
+            disabled={!editor.can().chain().focus().redo().run()}
             aria-label="redo"
             pressed={editor.isActive('redo')}
             onPressedChange={() => editor.chain().focus().redo().run()}
           >
-            <Redo className="h-4 w-4" />
+            <Redo className="w-4 h-4" />
           </Toggle>
 
-          <Separator orientation="vertical" className="h-9 mx-1" />
+          <Separator orientation="vertical" className="mx-1 h-9" />
 
           <Toggle
             variant="outline"
+            tabIndex={-1}
             size="sm"
             aria-label="ordered list"
             pressed={editor.isActive('orderedList')}
@@ -195,10 +201,11 @@ const Tiptap = ({ val }: { val: string }) => {
               editor.chain().focus().toggleOrderedList().run()
             }
           >
-            <ListOrdered className="h-4 w-4" />
+            <ListOrdered className="w-4 h-4" />
           </Toggle>
           <Toggle
             variant="outline"
+            tabIndex={-1}
             size="sm"
             aria-label="bullet list"
             pressed={editor.isActive('bulletList')}
@@ -206,7 +213,7 @@ const Tiptap = ({ val }: { val: string }) => {
               editor.chain().focus().toggleBulletList().run()
             }
           >
-            <List className="h-4 w-4" />
+            <List className="w-4 h-4" />
           </Toggle>
         </div>
       )}
@@ -215,31 +222,34 @@ const Tiptap = ({ val }: { val: string }) => {
           <div className="flex gap-[2px]">
             <Toggle
               size="sm"
+              tabIndex={-1}
               className="h-7 px-1.5 bg-background/60 backdrop-blur-sm"
               pressed={editor.isActive('bold')}
               onPressedChange={() => editor.chain().focus().toggleBold().run()}
             >
-              <Bold className="h-4 w-4" />
+              <Bold className="w-4 h-4" />
             </Toggle>
             <Toggle
               size="sm"
+              tabIndex={-1}
               className="h-7 px-1.5 bg-background/60 backdrop-blur-sm"
               pressed={editor.isActive('italic')}
               onPressedChange={() =>
                 editor.chain().focus().toggleItalic().run()
               }
             >
-              <Italic className="h-4 w-4" />
+              <Italic className="w-4 h-4" />
             </Toggle>
             <Toggle
               size="sm"
+              tabIndex={-1}
               className="h-7 px-1.5 bg-background/60 backdrop-blur-sm"
               pressed={editor.isActive('strike')}
               onPressedChange={() =>
                 editor.chain().focus().toggleStrike().run()
               }
             >
-              <Strikethrough className="h-4 w-4" />
+              <Strikethrough className="w-4 h-4" />
             </Toggle>
             <Toggle
               size="sm"
@@ -249,7 +259,7 @@ const Tiptap = ({ val }: { val: string }) => {
                 editor.chain().focus().toggleBulletList().run()
               }
             >
-              <List className="h-4 w-4" />
+              <List className="w-4 h-4" />
             </Toggle>
           </div>
         </BubbleMenu>

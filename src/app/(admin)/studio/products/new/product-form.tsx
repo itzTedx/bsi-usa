@@ -15,23 +15,26 @@ import {
 import {
   Form,
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
-import { DollarSign, Loader, Loader2 } from 'lucide-react'
-import { z } from 'zod'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { useAction } from 'next-safe-action/hooks'
 import { createProduct } from '@/server/actions/create-product'
-import { useRouter, useSearchParams } from 'next/navigation'
-import { toast } from 'sonner'
-import { useEffect, useState } from 'react'
 import { getProduct } from '@/server/actions/get-product'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { Loader } from 'lucide-react'
+import { useAction } from 'next-safe-action/hooks'
+import { useRouter, useSearchParams } from 'next/navigation'
+import { useEffect, useState } from 'react'
+import { toast } from 'sonner'
+import { z } from 'zod'
+import ImageUpload from './image-upload'
+import { InputTags } from './input-tags'
 
-export default function ProductForm() {
+export const ProductForm = () => {
   const searchParams = useSearchParams()
   const editMode = searchParams.get('id')
 
@@ -48,7 +51,6 @@ export default function ProductForm() {
         const id = parseInt(editMode)
         form.setValue('title', success.title)
         form.setValue('description', success.description)
-        form.setValue('price', success.price)
         form.setValue('id', success.id)
       }
     }
@@ -68,7 +70,8 @@ export default function ProductForm() {
     defaultValues: {
       title: '',
       description: '',
-      price: 0,
+      tag: [],
+      images: [],
     },
   })
 
@@ -91,11 +94,11 @@ export default function ProductForm() {
   })
 
   function onSubmit(values: z.infer<typeof ProductSchema>) {
-    execute(values)
+    console.log(values)
   }
   return (
-    <Card className="w-full xl:w-1/2 overflow-hidden">
-      <CardHeader>
+    <Card className="w-full overflow-hidden xl:w-1/2">
+      <CardHeader className="p-1 pb-3">
         <CardTitle>{editMode ? 'Edit Product' : 'Add new product'}</CardTitle>
         <CardDescription>
           {editMode
@@ -103,7 +106,7 @@ export default function ProductForm() {
             : 'Add a brand new product'}
         </CardDescription>
       </CardHeader>
-      <CardContent className="w-full">
+      <CardContent className="w-full p-1">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
             <FormField
@@ -134,32 +137,22 @@ export default function ProductForm() {
                 </FormItem>
               )}
             />
+            <ImageUpload />
+
             <FormField
               control={form.control}
-              name="price"
+              name="tag"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="">Price</FormLabel>
-                  <FormControl>
-                    <div className="flex items-center gap-2">
-                      <DollarSign
-                        size={36}
-                        className="p-2 bg-muted rounded-md"
-                      />
-                      <Input
-                        placeholder="Product Price"
-                        type="number"
-                        step="0.1"
-                        min={0}
-                        {...field}
-                      />
-                    </div>
-                  </FormControl>
+                  <FormLabel className="">Keywords</FormLabel>
+                  <FormDescription>For SEO keywords</FormDescription>
+                  <InputTags {...field} onChange={(e) => field.onChange(e)} />
 
                   <FormMessage />
                 </FormItem>
               )}
             />
+
             <Button
               disabled={
                 status === 'executing' ||

@@ -2,7 +2,7 @@ import { Button } from '@/components/ui/button'
 import { auth } from '@/server/auth'
 import Link from 'next/link'
 import { redirect } from 'next/navigation'
-import ProductForm from './product-form'
+import { ProductForm } from './product-form'
 
 export default async function NewProductPage() {
   const session = await auth()
@@ -20,7 +20,7 @@ export default async function NewProductPage() {
           <Link href="/studio/products">Back to products</Link>
         </Button>
       </div>
-      <div className="flex flex-1 p-2 md:p-6 rounded-lg border border-dashed shadow-sm">
+      <div className="flex flex-1 p-0 sm:border sm:border-dashed sm:shadow-sm md:p-6 sm:rounded-lg">
         <ProductForm />
       </div>
     </>

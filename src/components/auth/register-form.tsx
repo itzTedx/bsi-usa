@@ -44,12 +44,11 @@ export default function RegisterFom() {
   })
 
   function onSubmit(values: z.infer<typeof RegisterSchema>) {
-    console.log('Before server action runs')
     execute(values)
   }
 
   return (
-    <div className="container grid place-content-center mt-12">
+    <div className="container grid mt-12 place-content-center">
       <AuthCard
         cardTitle="Create a new account"
         cardDesc="to continue using Home"
@@ -60,9 +59,9 @@ export default function RegisterFom() {
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit)}
-            className="gap-y-2 flex flex-col"
+            className="flex flex-col gap-y-2"
           >
-            <div className="gap-y-4 flex flex-col">
+            <div className="flex flex-col gap-y-4">
               <FormField
                 control={form.control}
                 name="name"

@@ -11,7 +11,7 @@ const action = createSafeActionClient()
 
 export const createProduct = action
   .schema(ProductSchema)
-  .action(async ({ parsedInput: { title, description, price, id } }) => {
+  .action(async ({ parsedInput: { title, description, id, tags, images } }) => {
     try {
       if (id) {
         const currentProduct = await db.query.products.findFirst({
@@ -20,7 +20,7 @@ export const createProduct = action
         if (!currentProduct) return { error: 'Product not found' }
         const editedProduct = await db
           .update(products)
-          .set({ description, price, title })
+          .set({ description, title })
           .where(eq(products.id, id))
           .returning()
         revalidatePath('/studio/products')
@@ -35,7 +35,6 @@ export const createProduct = action
           .insert(products)
           .values({
             description,
-            price,
             title,
           })
           .returning()

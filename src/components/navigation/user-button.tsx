@@ -16,7 +16,6 @@ import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar'
 import Link from 'next/link'
 
 export default function UserButton({ user }: Session) {
-  console.log(user)
   if (user)
     return (
       <DropdownMenu modal={false}>
@@ -36,7 +35,7 @@ export default function UserButton({ user }: Session) {
           </Avatar>
         </DropdownMenuTrigger>
         <DropdownMenuContent className="w-64 p-4" align="end">
-          <div className="mb-4 py-3 px-4 flex items-center bg-primary/10 rounded-lg">
+          <div className="flex items-center px-4 py-3 mb-4 rounded-lg bg-primary/10">
             <Avatar>
               <AvatarImage
                 src={user.image!}
@@ -61,7 +60,7 @@ export default function UserButton({ user }: Session) {
 
           <Link href="/studio/settings">
             <DropdownMenuItem>
-              <Settings className="size-5 mr-2" /> Settings
+              <Settings className="mr-2 size-5" /> Settings
             </DropdownMenuItem>
           </Link>
 
@@ -69,7 +68,7 @@ export default function UserButton({ user }: Session) {
             onClick={() => signOut()}
             className="hover:bg-destructive/50"
           >
-            <LogOut className="size-5 mr-2" />
+            <LogOut className="mr-2 size-5" />
             Sign out
           </DropdownMenuItem>
         </DropdownMenuContent>
