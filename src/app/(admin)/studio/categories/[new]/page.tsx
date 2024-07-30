@@ -1,12 +1,10 @@
 import { Button } from '@/components/ui/button'
-import { db } from '@/server'
 import { auth } from '@/server/auth'
 import Link from 'next/link'
 import { redirect } from 'next/navigation'
-import { DataTable } from './data-table'
-import { columns } from './columns'
+import { CategoryForm } from './category-form'
 
-export default async function CategoryPage() {
+export default async function Page({ params }: { params: { new: string } }) {
   const session = await auth()
   const isAdmin = session?.user.role === 'admin'
 
@@ -15,16 +13,18 @@ export default async function CategoryPage() {
     redirect('/auth/not-allowed')
   }
 
+  const editMode = params.new
   return (
     <>
       <div className="flex items-center justify-between">
         <h1 className="text-lg font-semibold md:text-2xl">Categories</h1>
         <Button variant={'outline'} asChild>
-          <Link href="/studio/categories/new">Add Category</Link>
+          <Link href="/studio/products">Back to Category</Link>
         </Button>
       </div>
-
-      {/* <DataTable columns={columns} data={dataTable} /> */}
+      <div className="flex flex-1 p-0 md:border md:border-dashed sm:shadow-sm md:p-6 sm:rounded-lg">
+        <CategoryForm editMode={editMode} />
+      </div>
     </>
   )
 }

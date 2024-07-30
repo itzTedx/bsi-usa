@@ -105,12 +105,24 @@ export const twoFactorTokens = pgTable(
   })
 )
 
+//Categories Schema
+export const categories = pgTable('categories', {
+  id: serial('id').primaryKey(),
+  title: text('title').notNull(),
+  description: text('description').notNull(),
+  createdAt: timestamp('createdAt').defaultNow(),
+})
+
 // Products Schema
 export const products = pgTable('products', {
   id: serial('id').primaryKey(),
   title: text('title').notNull(),
   description: text('description').notNull(),
   createdAt: timestamp('createdAt').defaultNow(),
+
+  categoryId: serial('productId')
+    .notNull()
+    .references(() => categories.id, { onDelete: 'cascade' }),
 })
 
 export const productImages = pgTable('product_images', {

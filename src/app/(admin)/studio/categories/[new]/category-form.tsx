@@ -42,13 +42,11 @@ import { useRouter, useSearchParams } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { toast } from 'sonner'
 import { z } from 'zod'
-import ImageUpload from './image-upload'
-import { InputTags } from './input-tags'
 import { deleteProduct } from '@/server/actions/delete-product'
 
-export const ProductForm = () => {
+export const CategoryForm = ({ editMode }: { editMode: string }) => {
   const searchParams = useSearchParams()
-  const editMode = searchParams.get('id')
+  //   const editMode = searchParams.get('id')
 
   const checkProduct = async (id: number) => {
     if (editMode) {
@@ -190,21 +188,6 @@ export const ProductForm = () => {
                   <FormControl>
                     <Tiptap val={field.value} />
                   </FormControl>
-
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <ImageUpload />
-
-            <FormField
-              control={form.control}
-              name="productTags"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="">Keywords</FormLabel>
-                  <FormDescription>For SEO keywords</FormDescription>
-                  <InputTags {...field} onChange={(e) => field.onChange(e)} />
 
                   <FormMessage />
                 </FormItem>

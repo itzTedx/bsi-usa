@@ -1,14 +1,12 @@
 import { auth } from '@/server/auth'
-import { LogIn, Menu, Search } from 'lucide-react'
+import { LogIn } from 'lucide-react'
 import Link from 'next/link'
 import { Button } from '../ui/button'
 import UserButton from './user-button'
 
-import { Input } from '@/components/ui/input'
-import { Sheet, SheetTrigger } from '@/components/ui/sheet'
+import { ThemeToggle } from '../ui/theme-toggle-button'
 import Sidebar from './sidebar'
 import SidebarMob from './sidebar-mob'
-import { ThemeToggle } from '../ui/theme-toggle-button'
 
 export default async function Nav({ children }: { children: React.ReactNode }) {
   const session = await auth()
@@ -19,19 +17,7 @@ export default async function Nav({ children }: { children: React.ReactNode }) {
         <Sidebar />
         <div className="flex flex-col">
           <header className="flex h-14 items-center gap-4 border-b bg-muted/50 px-4 lg:h-[60px] lg:px-6 sticky top-0 backdrop-blur-xl z-50">
-            <Sheet>
-              <SheetTrigger asChild>
-                <Button
-                  variant="outline"
-                  size="icon"
-                  className="shrink-0 md:hidden"
-                >
-                  <Menu className="h-5 w-5" />
-                  <span className="sr-only">Toggle navigation menu</span>
-                </Button>
-              </SheetTrigger>
-              <SidebarMob />
-            </Sheet>
+            <SidebarMob />
             <div className="w-full flex-1">
               {/* <form>
                 <div className="relative">
