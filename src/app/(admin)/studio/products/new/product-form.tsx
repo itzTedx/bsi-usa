@@ -21,11 +21,22 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form'
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from '@/components/ui/alert-dialog'
 import { Input } from '@/components/ui/input'
 import { createProduct } from '@/server/actions/create-product'
 import { getProduct } from '@/server/actions/get-product'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Loader } from 'lucide-react'
+import { Loader, Trash } from 'lucide-react'
 import { useAction } from 'next-safe-action/hooks'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { useEffect, useState } from 'react'
@@ -33,6 +44,7 @@ import { toast } from 'sonner'
 import { z } from 'zod'
 import ImageUpload from './image-upload'
 import { InputTags } from './input-tags'
+import { deleteProduct } from '@/server/actions/delete-product'
 
 export const ProductForm = () => {
   const searchParams = useSearchParams()
@@ -52,6 +64,11 @@ export const ProductForm = () => {
         form.setValue('title', success.title)
         form.setValue('description', success.description)
         form.setValue('id', success.id)
+        form.setValue('productImages', success.productImages)
+        form.setValue(
+          'productTags',
+          success.productTags.map((tag) => tag.tag)
+        )
       }
     }
   }
@@ -70,8 +87,8 @@ export const ProductForm = () => {
     defaultValues: {
       title: '',
       description: '',
-      tag: [],
-      images: [],
+      productTags: [],
+      productImages: [],
     },
   })
 
@@ -93,18 +110,58 @@ export const ProductForm = () => {
     },
   })
 
+  const { execute: deleteExistingProduct } = useAction(deleteProduct, {
+    onSuccess: ({ data }) => {
+      if (data?.success) {
+        router.push('/studio/products')
+        toast.success(data.success)
+      }
+      if (data?.error) toast.error(data.error)
+    },
+  })
   function onSubmit(values: z.infer<typeof ProductSchema>) {
-    console.log(values)
+    execute(values)
   }
   return (
     <Card className="w-full overflow-hidden xl:w-1/2">
-      <CardHeader className="p-1 pb-3">
-        <CardTitle>{editMode ? 'Edit Product' : 'Add new product'}</CardTitle>
-        <CardDescription>
-          {editMode
-            ? 'Make changes to existing product'
-            : 'Add a brand new product'}
-        </CardDescription>
+      <CardHeader className="p-1 pb-3 flex flex-row justify-between">
+        <div className="">
+          <CardTitle>{editMode ? 'Edit Product' : 'Add new product'}</CardTitle>
+          <CardDescription>
+            {editMode
+              ? 'Make changes to existing product'
+              : 'Add a brand new product'}
+          </CardDescription>
+        </div>
+
+        {editMode ? (
+          <AlertDialog>
+            <AlertDialogTrigger>
+              <Button variant={'destructive'} size={'icon'}>
+                <Trash className="size-5" />
+              </Button>
+            </AlertDialogTrigger>
+            <AlertDialogContent>
+              <AlertDialogHeader>
+                <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                <AlertDialogDescription>
+                  This action cannot be undone. This will permanently delete
+                  your product and remove your data from servers.
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                <AlertDialogAction
+                  onClick={() =>
+                    deleteExistingProduct({ id: parseInt(editMode) })
+                  }
+                >
+                  Delete
+                </AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
+        ) : null}
       </CardHeader>
       <CardContent className="w-full p-1">
         <Form {...form}>
@@ -141,7 +198,7 @@ export const ProductForm = () => {
 
             <FormField
               control={form.control}
-              name="tag"
+              name="productTags"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className="">Keywords</FormLabel>

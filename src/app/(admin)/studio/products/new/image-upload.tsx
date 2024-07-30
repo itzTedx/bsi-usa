@@ -32,7 +32,7 @@ export default function ImageUpload() {
 
   const { fields, remove, append, update, move } = useFieldArray({
     control,
-    name: 'images',
+    name: 'productImages',
   })
 
   const [active, setActive] = useState(0)
@@ -41,7 +41,7 @@ export default function ImageUpload() {
     <div className="">
       <FormField
         control={control}
-        name="images"
+        name="productImages"
         render={({ field }) => (
           <FormItem>
             <FormLabel className="">Images</FormLabel>
@@ -50,7 +50,7 @@ export default function ImageUpload() {
                 className="transition-all duration-500 ease-in-out border cursor-pointer border-input ut-allowed-content:text-secondary-foreground/70 ut-label:text-primary ut-upload-icon:text-primary/70 hover:bg-primary/5 ut-button:bg-primary/75"
                 endpoint="productImageUploader"
                 onUploadError={(error) => {
-                  setError('images', {
+                  setError('productImages', {
                     type: 'validate',
                     message: error.message,
                   })
@@ -67,7 +67,7 @@ export default function ImageUpload() {
                   return files
                 }}
                 onClientUploadComplete={(files) => {
-                  const images = getValues('images')
+                  const images = getValues('productImages')
                   images.map((field, imgIdx) => {
                     if (field.url.search('blob:') === 0) {
                       const image = files.find((img) => img.name === field.name)

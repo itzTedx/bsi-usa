@@ -9,8 +9,8 @@ export const ProductSchema = z.object({
     .string()
     .min(3, { message: 'Description must be at least 3 characters long' }),
   editMode: z.boolean().optional(),
-  tag: z.array(z.string()).optional(),
-  images: z.array(
+  productTags: z.array(z.string()).optional(),
+  productImages: z.array(
     z.object(
       {
         url: z.string().refine((url) => url.search('blob:') !== 0, {

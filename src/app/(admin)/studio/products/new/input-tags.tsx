@@ -55,7 +55,7 @@ export const InputTags = forwardRef<HTMLInputElement, InputTagsProps>(
                 >
                   <Badge variant={'secondary'}>{tag}</Badge>
                   <Button
-                    className="h-6 px-1 bg-inherit"
+                    className="h-6 px-1 bg-inherit text-secondary-foreground"
                     onClick={() => onChange(value.filter((i) => i !== tag))}
                   >
                     <XIcon className="size-4" />

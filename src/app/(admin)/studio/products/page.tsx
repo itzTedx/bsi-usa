@@ -28,7 +28,7 @@ export default async function ProductsPage() {
       id: product.id,
       title: product.title,
       created: product.createdAt,
-      image: '/placeholder.png',
+      image: product.productImages,
     }
   })
 
