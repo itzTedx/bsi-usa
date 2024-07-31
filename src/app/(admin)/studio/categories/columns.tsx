@@ -27,19 +27,14 @@ import {
 } from '@/components/ui/alert-dialog'
 import Link from 'next/link'
 
-type ProductColumn = {
+type CategoryColumn = {
   title: string
-  image: {
-    size: number
-    name: string
-    url: string
-    order: number
-  }[]
+
   // created: Date
   id: number
 }
 
-const ActionCell = ({ row }: { row: Row<ProductColumn> }) => {
+const ActionCell = ({ row }: { row: Row<CategoryColumn> }) => {
   const { execute, status } = useAction(deleteProduct, {
     onSuccess: ({ data }) => {
       if (data?.success) toast.success(data.success)
@@ -59,7 +54,7 @@ const ActionCell = ({ row }: { row: Row<ProductColumn> }) => {
       <DropdownMenuContent align="center">
         <DropdownMenuItem>
           <Link href={`/studio/products/new?id=${product.id}`}>
-            Edit Product
+            Edit Category
           </Link>
         </DropdownMenuItem>
 
@@ -88,16 +83,12 @@ const ActionCell = ({ row }: { row: Row<ProductColumn> }) => {
   )
 }
 
-export const columns: ColumnDef<ProductColumn>[] = [
+export const columns: ColumnDef<CategoryColumn>[] = [
   {
     accessorKey: 'title',
-    header: 'Product Title',
+    header: 'Category Title',
   },
 
-  {
-    accessorKey: 'title',
-    header: 'Category',
-  },
   // {
   //   accessorKey: 'created',
   //   header: 'Created At',
@@ -115,40 +106,7 @@ export const columns: ColumnDef<ProductColumn>[] = [
   //     return <div>{formatted}</div>
   //   },
   // },
-  {
-    accessorKey: 'image',
-    header: 'Image',
-    cell: ({ row }) => {
-      const cellImage = row.getValue('image') as any
-      if (cellImage.length === 1) {
-        return (
-          <div className="size-10 relative">
-            <Image
-              src={cellImage[0].url}
-              fill
-              alt="Image"
-              className="object-cover rounded"
-            />
-          </div>
-        )
-      } else {
-        return (
-          <div className="flex items-center gap-1">
-            {cellImage.map((img: any, i: any) => (
-              <div className="relative size-10" key={i}>
-                <Image
-                  src={img.url}
-                  fill
-                  alt="Image"
-                  className="object-cover rounded border"
-                />
-              </div>
-            ))}
-          </div>
-        )
-      }
-    },
-  },
+
   {
     id: 'actions',
     cell: ActionCell,

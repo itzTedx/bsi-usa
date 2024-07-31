@@ -1,26 +1,8 @@
 'use client'
 
-import { ProductSchema, zProductSchema } from '@/types/product-schema'
 import { useForm } from 'react-hook-form'
 
 import Tiptap from '@/components/tiptap'
-import { Button } from '@/components/ui/button'
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card'
-import {
-  Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/components/ui/form'
 import {
   AlertDialog,
   AlertDialogAction,
@@ -32,9 +14,26 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog'
+import { Button } from '@/components/ui/button'
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card'
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
-import { createProduct } from '@/server/actions/create-product'
+import { createCategory } from '@/server/actions/create-category'
 import { getProduct } from '@/server/actions/get-product'
+import { CategorySchema, zCategorySchema } from '@/types/category-schema'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Loader, Trash } from 'lucide-react'
 import { useAction } from 'next-safe-action/hooks'
@@ -42,11 +41,10 @@ import { useRouter, useSearchParams } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { toast } from 'sonner'
 import { z } from 'zod'
-import { deleteProduct } from '@/server/actions/delete-product'
 
-export const CategoryForm = ({ editMode }: { editMode: string }) => {
+export const CategoryForm = () => {
   const searchParams = useSearchParams()
-  //   const editMode = searchParams.get('id')
+  const editMode = searchParams.get('id')
 
   const checkProduct = async (id: number) => {
     if (editMode) {
@@ -54,7 +52,7 @@ export const CategoryForm = ({ editMode }: { editMode: string }) => {
 
       if (error) {
         toast.error(error)
-        router.push('/studio/products')
+        router.push('/studio/categories')
         return
       }
       if (success) {
@@ -62,11 +60,6 @@ export const CategoryForm = ({ editMode }: { editMode: string }) => {
         form.setValue('title', success.title)
         form.setValue('description', success.description)
         form.setValue('id', success.id)
-        form.setValue('productImages', success.productImages)
-        form.setValue(
-          'productTags',
-          success.productTags.map((tag) => tag.tag)
-        )
       }
     }
   }
@@ -81,23 +74,21 @@ export const CategoryForm = ({ editMode }: { editMode: string }) => {
   const router = useRouter()
   const [loading, setLoading] = useState(false)
 
-  const form = useForm<zProductSchema>({
-    resolver: zodResolver(ProductSchema),
+  const form = useForm<zCategorySchema>({
+    resolver: zodResolver(CategorySchema),
     defaultValues: {
       title: '',
       description: '',
-      productTags: [],
-      productImages: [],
     },
   })
 
-  const { execute, status } = useAction(createProduct, {
+  const { execute, status } = useAction(createCategory, {
     onExecute: () => {
       setLoading(true)
     },
     onSuccess: ({ data }) => {
       if (data?.success) {
-        router.push('/studio/products')
+        router.push('/studio/categories')
         toast.success(data.success)
         setLoading(false)
       }
@@ -109,27 +100,21 @@ export const CategoryForm = ({ editMode }: { editMode: string }) => {
     },
   })
 
-  const { execute: deleteExistingProduct } = useAction(deleteProduct, {
-    onSuccess: ({ data }) => {
-      if (data?.success) {
-        router.push('/studio/products')
-        toast.success(data.success)
-      }
-      if (data?.error) toast.error(data.error)
-    },
-  })
-  function onSubmit(values: z.infer<typeof ProductSchema>) {
+  function onSubmit(values: z.infer<typeof CategorySchema>) {
     execute(values)
   }
+
   return (
     <Card className="w-full overflow-hidden xl:w-1/2">
       <CardHeader className="p-1 pb-3 flex flex-row justify-between">
         <div className="">
-          <CardTitle>{editMode ? 'Edit Product' : 'Add new product'}</CardTitle>
+          <CardTitle>
+            {editMode ? 'Edit Category' : 'Add new category'}
+          </CardTitle>
           <CardDescription>
             {editMode
-              ? 'Make changes to existing product'
-              : 'Add a brand new product'}
+              ? 'Make changes to existing category'
+              : 'Add a brand new category'}
           </CardDescription>
         </div>
 
@@ -145,18 +130,12 @@ export const CategoryForm = ({ editMode }: { editMode: string }) => {
                 <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
                 <AlertDialogDescription>
                   This action cannot be undone. This will permanently delete
-                  your product and remove your data from servers.
+                  your category and products related to that.
                 </AlertDialogDescription>
               </AlertDialogHeader>
               <AlertDialogFooter>
                 <AlertDialogCancel>Cancel</AlertDialogCancel>
-                <AlertDialogAction
-                  onClick={() =>
-                    deleteExistingProduct({ id: parseInt(editMode) })
-                  }
-                >
-                  Delete
-                </AlertDialogAction>
+                <AlertDialogAction onClick={() => {}}>Delete</AlertDialogAction>
               </AlertDialogFooter>
             </AlertDialogContent>
           </AlertDialog>
@@ -170,9 +149,9 @@ export const CategoryForm = ({ editMode }: { editMode: string }) => {
               name="title"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="">Product Title</FormLabel>
+                  <FormLabel className="">Category Name</FormLabel>
                   <FormControl>
-                    <Input placeholder="Product Title" {...field} />
+                    <Input placeholder="Name" {...field} />
                   </FormControl>
 
                   <FormMessage />

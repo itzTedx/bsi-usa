@@ -15,6 +15,19 @@ export default async function CategoryPage() {
     redirect('/auth/not-allowed')
   }
 
+  const categories = await db.query.categories.findMany({
+    orderBy: (categories, { desc }) => [desc(categories.id)],
+  })
+
+  const dataTable = categories.map((category) => {
+    return {
+      id: category.id,
+      title: category.title,
+    }
+  })
+
+  if (!dataTable) throw new Error('No data found')
+
   return (
     <>
       <div className="flex items-center justify-between">
@@ -24,7 +37,7 @@ export default async function CategoryPage() {
         </Button>
       </div>
 
-      {/* <DataTable columns={columns} data={dataTable} /> */}
+      <DataTable columns={columns} data={dataTable} />
     </>
   )
 }

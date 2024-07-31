@@ -3,6 +3,7 @@ import { auth } from '@/server/auth'
 import Link from 'next/link'
 import { redirect } from 'next/navigation'
 import { ProductForm } from './product-form'
+import { db } from '@/server'
 
 export default async function NewProductPage() {
   const session = await auth()
@@ -12,6 +13,7 @@ export default async function NewProductPage() {
   if (!isAdmin) {
     redirect('/auth/not-allowed')
   }
+
   return (
     <>
       <div className="flex items-center justify-between">

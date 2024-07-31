@@ -120,7 +120,7 @@ export const products = pgTable('products', {
   description: text('description').notNull(),
   createdAt: timestamp('createdAt').defaultNow(),
 
-  categoryId: serial('productId')
+  productId: serial('categoryId')
     .notNull()
     .references(() => categories.id, { onDelete: 'cascade' }),
 })

@@ -4,6 +4,17 @@ import { ProductSchema, zProductSchema } from '@/types/product-schema'
 import { useForm } from 'react-hook-form'
 
 import Tiptap from '@/components/tiptap'
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from '@/components/ui/alert-dialog'
 import { Button } from '@/components/ui/button'
 import {
   Card,
@@ -22,18 +33,18 @@ import {
   FormMessage,
 } from '@/components/ui/form'
 import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from '@/components/ui/alert-dialog'
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu'
+
 import { Input } from '@/components/ui/input'
 import { createProduct } from '@/server/actions/create-product'
+import { deleteProduct } from '@/server/actions/delete-product'
+import { getCategories } from '@/server/actions/get-categories'
 import { getProduct } from '@/server/actions/get-product'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Loader, Trash } from 'lucide-react'
@@ -44,7 +55,7 @@ import { toast } from 'sonner'
 import { z } from 'zod'
 import ImageUpload from './image-upload'
 import { InputTags } from './input-tags'
-import { deleteProduct } from '@/server/actions/delete-product'
+import { db } from '@/server'
 
 export const ProductForm = () => {
   const searchParams = useSearchParams()
@@ -88,6 +99,7 @@ export const ProductForm = () => {
     defaultValues: {
       title: '',
       description: '',
+      categoryId: '',
       productTags: [],
       productImages: [],
     },
@@ -123,6 +135,7 @@ export const ProductForm = () => {
   function onSubmit(values: z.infer<typeof ProductSchema>) {
     execute(values)
   }
+
   return (
     <Card className="w-full overflow-hidden xl:w-1/2">
       <CardHeader className="p-1 pb-3 flex flex-row justify-between">
@@ -196,6 +209,29 @@ export const ProductForm = () => {
               )}
             />
             <ImageUpload />
+            <FormField
+              control={form.control}
+              name="categoryId"
+              render={({ field }) => {
+                console.log(field)
+                return (
+                  <FormItem className="flex flex-col">
+                    <FormLabel>Category</FormLabel>
+                    <DropdownMenu>
+                      <DropdownMenuTrigger>Open</DropdownMenuTrigger>
+                      <DropdownMenuContent>
+                        <DropdownMenuItem>Profile</DropdownMenuItem>
+                        <DropdownMenuItem>Billing</DropdownMenuItem>
+                        <DropdownMenuItem>Team</DropdownMenuItem>
+                        <DropdownMenuItem>Subscription</DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+
+                    <FormMessage />
+                  </FormItem>
+                )
+              }}
+            />
 
             <FormField
               control={form.control}

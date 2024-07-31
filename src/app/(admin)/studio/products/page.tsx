@@ -23,6 +23,7 @@ export default async function ProductsPage() {
 
     orderBy: (products, { desc }) => [desc(products.id)],
   })
+
   const dataTable = products.map((product) => {
     return {
       id: product.id,

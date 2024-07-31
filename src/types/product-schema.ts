@@ -9,6 +9,8 @@ export const ProductSchema = z.object({
     .string()
     .min(3, { message: 'Description must be at least 3 characters long' }),
   editMode: z.boolean().optional(),
+  categoryId: z.string(),
+  category: z.string(),
   productTags: z.array(z.string()).optional(),
   productImages: z.array(
     z.object(

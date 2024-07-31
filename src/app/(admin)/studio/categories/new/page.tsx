@@ -13,7 +13,8 @@ export default async function Page({ params }: { params: { new: string } }) {
     redirect('/auth/not-allowed')
   }
 
-  const editMode = params.new
+  const data = params.new
+
   return (
     <>
       <div className="flex items-center justify-between">
@@ -23,7 +24,7 @@ export default async function Page({ params }: { params: { new: string } }) {
         </Button>
       </div>
       <div className="flex flex-1 p-0 md:border md:border-dashed sm:shadow-sm md:p-6 sm:rounded-lg">
-        <CategoryForm editMode={editMode} />
+        <CategoryForm />
       </div>
     </>
   )
