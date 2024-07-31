@@ -6,6 +6,7 @@ import { createSafeActionClient } from 'next-safe-action'
 import { revalidatePath } from 'next/cache'
 import { db } from '..'
 import { categories } from '../schema'
+import { slugify } from '@/lib/utils'
 
 const action = createSafeActionClient()
 
@@ -20,7 +21,7 @@ export const createCategory = action
         if (!currentCategory) return { error: 'Category not found' }
         const editedCategory = await db
           .update(categories)
-          .set({ description, title })
+          .set({ description, title, slug: slugify(title) })
           .where(eq(categories.id, id))
           .returning()
 
@@ -37,10 +38,11 @@ export const createCategory = action
           .values({
             description,
             title,
+            slug: slugify(title),
           })
           .returning()
 
-        revalidatePath('/studio/categories')
+        // revalidatePath('/studio/categories')
 
         return {
           success: `Category: (${newCategory[0].title}) has been created`,

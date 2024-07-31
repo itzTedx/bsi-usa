@@ -1,7 +1,13 @@
 'use client'
 
-import { ProductSchema, zProductSchema } from '@/types/product-schema'
 import { useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { Loader, PlusCircle, SortAsc, Trash } from 'lucide-react'
+import { useAction } from 'next-safe-action/hooks'
+import { useRouter, useSearchParams } from 'next/navigation'
+import { useEffect, useState } from 'react'
+import { toast } from 'sonner'
+import { z } from 'zod'
 
 import Tiptap from '@/components/tiptap'
 import {
@@ -24,6 +30,15 @@ import {
   CardTitle,
 } from '@/components/ui/card'
 import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+  CommandSeparator,
+} from '@/components/ui/command'
+import {
   Form,
   FormControl,
   FormDescription,
@@ -33,31 +48,40 @@ import {
   FormMessage,
 } from '@/components/ui/form'
 import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu'
-
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@/components/ui/popover'
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog'
 import { Input } from '@/components/ui/input'
-import { createProduct } from '@/server/actions/create-product'
-import { deleteProduct } from '@/server/actions/delete-product'
-import { getCategories } from '@/server/actions/get-categories'
-import { getProduct } from '@/server/actions/get-product'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { Loader, Trash } from 'lucide-react'
-import { useAction } from 'next-safe-action/hooks'
-import { useRouter, useSearchParams } from 'next/navigation'
-import { useEffect, useState } from 'react'
-import { toast } from 'sonner'
-import { z } from 'zod'
+
 import ImageUpload from './image-upload'
 import { InputTags } from './input-tags'
-import { db } from '@/server'
+import { CategoryForm } from '../../categories/new/category-form'
 
-export const ProductForm = () => {
+import { cn } from '@/lib/utils'
+import { ProductSchema, zProductSchema } from '@/types/product-schema'
+import { createProduct } from '@/server/actions/create-product'
+import { deleteProduct } from '@/server/actions/delete-product'
+import { getProduct } from '@/server/actions/get-product'
+
+export const ProductForm = ({
+  data,
+}: {
+  data: {
+    id: number
+    title: string
+    description: string
+    createdAt: Date | null
+  }[]
+}) => {
   const searchParams = useSearchParams()
   const editMode = searchParams.get('id')
 
@@ -76,6 +100,7 @@ export const ProductForm = () => {
         form.setValue('description', success.description)
         form.setValue('id', success.id)
         form.setValue('productImages', success.productImages)
+        form.setValue('categoryId', success.categoryId)
         form.setValue(
           'productTags',
           success.productTags.map((tag) => tag.tag)
@@ -99,7 +124,7 @@ export const ProductForm = () => {
     defaultValues: {
       title: '',
       description: '',
-      categoryId: '',
+      categoryId: 0,
       productTags: [],
       productImages: [],
     },
@@ -137,7 +162,7 @@ export const ProductForm = () => {
   }
 
   return (
-    <Card className="w-full overflow-hidden xl:w-1/2">
+    <Card className="w-full overflow-hidden xl:w-1/2 border-none ">
       <CardHeader className="p-1 pb-3 flex flex-row justify-between">
         <div className="">
           <CardTitle>{editMode ? 'Edit Product' : 'Add new product'}</CardTitle>
@@ -208,30 +233,74 @@ export const ProductForm = () => {
                 </FormItem>
               )}
             />
-            <ImageUpload />
+
             <FormField
               control={form.control}
               name="categoryId"
-              render={({ field }) => {
-                console.log(field)
-                return (
-                  <FormItem className="flex flex-col">
-                    <FormLabel>Category</FormLabel>
-                    <DropdownMenu>
-                      <DropdownMenuTrigger>Open</DropdownMenuTrigger>
-                      <DropdownMenuContent>
-                        <DropdownMenuItem>Profile</DropdownMenuItem>
-                        <DropdownMenuItem>Billing</DropdownMenuItem>
-                        <DropdownMenuItem>Team</DropdownMenuItem>
-                        <DropdownMenuItem>Subscription</DropdownMenuItem>
-                      </DropdownMenuContent>
-                    </DropdownMenu>
+              render={({ field }) => (
+                <FormItem className="flex flex-col">
+                  <FormLabel>Category</FormLabel>
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <FormControl>
+                        <Button
+                          variant="outline"
+                          role="combobox"
+                          className={cn(
+                            'w-[200px] justify-between border-input text-foreground',
+                            !field.value && 'text-muted-foreground'
+                          )}
+                        >
+                          {field.value
+                            ? data.find((cat) => cat.id === field.value)?.title
+                            : 'Select Category'}
+                          <SortAsc className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                        </Button>
+                      </FormControl>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-[200px] p-0">
+                      <Command>
+                        <CommandInput placeholder="Search Category..." />
+                        <CommandEmpty>No Category found.</CommandEmpty>
+                        <CommandList>
+                          <CommandGroup>
+                            {data.map((cat) => (
+                              <CommandItem
+                                value={cat.title}
+                                key={cat.id}
+                                onSelect={() => {
+                                  form.setValue('categoryId', cat.id)
+                                }}
+                              >
+                                {cat.title}
+                              </CommandItem>
+                            ))}
+                          </CommandGroup>
+                          <CommandSeparator />
+                          <CommandGroup>
+                            <CommandItem className="">
+                              <Dialog>
+                                <DialogTrigger className="flex gap-2 text-sm">
+                                  <PlusCircle className="size-5" /> Add new
+                                  Category
+                                </DialogTrigger>
+                                <DialogContent>
+                                  <CategoryForm goBack={false} />
+                                </DialogContent>
+                              </Dialog>
+                            </CommandItem>
+                          </CommandGroup>
+                        </CommandList>
+                      </Command>
+                    </PopoverContent>
+                  </Popover>
 
-                    <FormMessage />
-                  </FormItem>
-                )
-              }}
+                  <FormMessage />
+                </FormItem>
+              )}
             />
+
+            <ImageUpload />
 
             <FormField
               control={form.control}

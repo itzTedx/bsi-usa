@@ -14,6 +14,8 @@ export default async function NewProductPage() {
     redirect('/auth/not-allowed')
   }
 
+  const categories = await db.query.categories.findMany()
+
   return (
     <>
       <div className="flex items-center justify-between">
@@ -23,7 +25,7 @@ export default async function NewProductPage() {
         </Button>
       </div>
       <div className="flex flex-1 p-0 md:border md:border-dashed sm:shadow-sm md:p-6 sm:rounded-lg">
-        <ProductForm />
+        <ProductForm data={categories} />
       </div>
     </>
   )

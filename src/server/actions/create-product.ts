@@ -6,6 +6,7 @@ import { db } from '..'
 import { eq } from 'drizzle-orm'
 import { productImages, products, productTags } from '../schema'
 import { revalidatePath } from 'next/cache'
+import { slugify } from '@/lib/utils'
 
 const action = createSafeActionClient()
 
@@ -17,6 +18,7 @@ export const createProduct = action
         title,
         description,
         id,
+        categoryId,
         productTags: tags,
         productImages: newImgs,
       },
@@ -27,9 +29,10 @@ export const createProduct = action
             where: eq(products.id, id),
           })
           if (!currentProduct) return { error: 'Product not found' }
+
           const editedProduct = await db
             .update(products)
-            .set({ description, title })
+            .set({ description, title, categoryId, slug: slugify(title) })
             .where(eq(products.id, id))
             .returning()
 
@@ -74,6 +77,8 @@ export const createProduct = action
             .values({
               description,
               title,
+              categoryId,
+              slug: slugify(title),
             })
             .returning()
 

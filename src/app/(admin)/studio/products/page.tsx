@@ -19,6 +19,7 @@ export default async function ProductsPage() {
     with: {
       productImages: true,
       productTags: true,
+      category: true,
     },
 
     orderBy: (products, { desc }) => [desc(products.id)],
@@ -30,6 +31,7 @@ export default async function ProductsPage() {
       title: product.title,
       created: product.createdAt,
       image: product.productImages,
+      category: product.category.title,
     }
   })
 

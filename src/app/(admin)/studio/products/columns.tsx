@@ -29,6 +29,7 @@ import Link from 'next/link'
 
 type ProductColumn = {
   title: string
+  category: number | string
   image: {
     size: number
     name: string
@@ -95,7 +96,7 @@ export const columns: ColumnDef<ProductColumn>[] = [
   },
 
   {
-    accessorKey: 'title',
+    accessorKey: 'category',
     header: 'Category',
   },
   // {

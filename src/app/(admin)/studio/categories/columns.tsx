@@ -53,7 +53,7 @@ const ActionCell = ({ row }: { row: Row<CategoryColumn> }) => {
       </DropdownMenuTrigger>
       <DropdownMenuContent align="center">
         <DropdownMenuItem>
-          <Link href={`/studio/products/new?id=${product.id}`}>
+          <Link href={`/studio/categories/new?id=${product.id}`}>
             Edit Category
           </Link>
         </DropdownMenuItem>

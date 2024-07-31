@@ -110,8 +110,16 @@ export const categories = pgTable('categories', {
   id: serial('id').primaryKey(),
   title: text('title').notNull(),
   description: text('description').notNull(),
+  slug: text('slug').notNull(),
   createdAt: timestamp('createdAt').defaultNow(),
+
+  // productId: serial('productId')
+  //   .notNull()
+  //   .references(() => products.id, { onDelete: 'cascade' }),
 })
+export const categoryRelations = relations(categories, ({ many }) => ({
+  products: many(products),
+}))
 
 // Products Schema
 export const products = pgTable('products', {
@@ -119,10 +127,9 @@ export const products = pgTable('products', {
   title: text('title').notNull(),
   description: text('description').notNull(),
   createdAt: timestamp('createdAt').defaultNow(),
+  slug: text('slug').notNull(),
 
-  productId: serial('categoryId')
-    .notNull()
-    .references(() => categories.id, { onDelete: 'cascade' }),
+  categoryId: integer('categoryId').notNull(),
 })
 
 export const productImages = pgTable('product_images', {
@@ -146,9 +153,13 @@ export const productTags = pgTable('product_tags', {
     .references(() => products.id, { onDelete: 'cascade' }),
 })
 
-export const productRelations = relations(products, ({ many }) => ({
+export const productRelations = relations(products, ({ many, one }) => ({
   productImages: many(productImages, { relationName: 'productImages' }),
   productTags: many(productTags, { relationName: 'productTags' }),
+  category: one(categories, {
+    fields: [products.categoryId],
+    references: [categories.id],
+  }),
 }))
 
 export const productImagesRelations = relations(
@@ -169,3 +180,14 @@ export const productTagsRelations = relations(productTags, ({ many, one }) => ({
     relationName: 'productTags',
   }),
 }))
+
+// export const categoryProductRelations = relations(
+//   products,
+//   ({ many, one }) => ({
+//     products: one(products, {
+//       fields: [categories.productId],
+//       references: [products.id],
+//       relationName: 'category',
+//     }),
+//   })
+// )

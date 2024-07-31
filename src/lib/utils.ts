@@ -6,13 +6,13 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 export function formatFileSize(bytes: number): string {
-  if (bytes === 0) return '0 Bytes';
+  if (bytes === 0) return '0 Bytes'
 
-  const k = 1024;
-  const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB'];
-  const i = Math.floor(Math.log(bytes) / Math.log(k));
+  const k = 1024
+  const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB']
+  const i = Math.floor(Math.log(bytes) / Math.log(k))
 
-  return Math.floor(bytes / Math.pow(k, i)) + ' ' + sizes[i];
+  return Math.floor(bytes / Math.pow(k, i)) + ' ' + sizes[i]
 }
 
 export function truncateFileName(fileName: string, maxLength: number): string {
@@ -41,7 +41,12 @@ export function truncateFileName(fileName: string, maxLength: number): string {
   }
 }
 
-// Example usage:
-// const longFileName = "this_is_a_very_long_file_name_that_needs_to_be_truncated.txt";
-// const truncatedFileName = truncateFileName(longFileName, 30);
-// console.log(truncatedFileName); // Output: "this_is_a_ve...ame.txt"
+export function slugify(title: string): string {
+  return title
+    .toLowerCase() // Convert to lowercase
+    .trim() // Remove leading and trailing spaces
+    .replace(/[^\w\s-]/g, '') // Remove non-alphanumeric characters except hyphens
+    .replace(/\s+/g, '-') // Replace spaces with hyphens
+    .replace(/--+/g, '-') // Replace multiple hyphens with a single hyphen
+    .replace(/^-+|-+$/g, '') // Remove leading and trailing hyphens
+}

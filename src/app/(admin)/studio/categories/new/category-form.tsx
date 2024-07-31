@@ -41,18 +41,21 @@ import { useRouter, useSearchParams } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { toast } from 'sonner'
 import { z } from 'zod'
+import { getCategory } from '@/server/actions/get-category'
 
-export const CategoryForm = () => {
+export const CategoryForm = ({ goBack = true }: { goBack?: boolean }) => {
   const searchParams = useSearchParams()
   const editMode = searchParams.get('id')
 
-  const checkProduct = async (id: number) => {
+  const checkCategory = async (id: number) => {
     if (editMode) {
-      const { error, success } = await getProduct(id)
+      const { error, success } = await getCategory(id)
 
       if (error) {
         toast.error(error)
+
         router.push('/studio/categories')
+
         return
       }
       if (success) {
@@ -66,7 +69,7 @@ export const CategoryForm = () => {
 
   useEffect(() => {
     if (editMode) {
-      checkProduct(parseInt(editMode))
+      checkCategory(parseInt(editMode))
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
@@ -88,7 +91,11 @@ export const CategoryForm = () => {
     },
     onSuccess: ({ data }) => {
       if (data?.success) {
-        router.push('/studio/categories')
+        router.refresh()
+        if (goBack) {
+          router.push('/studio/categories')
+        }
+
         toast.success(data.success)
         setLoading(false)
       }
@@ -105,7 +112,7 @@ export const CategoryForm = () => {
   }
 
   return (
-    <Card className="w-full overflow-hidden xl:w-1/2">
+    <Card className="w-full overflow-hidden xl:w-1/2 border-none">
       <CardHeader className="p-1 pb-3 flex flex-row justify-between">
         <div className="">
           <CardTitle>
