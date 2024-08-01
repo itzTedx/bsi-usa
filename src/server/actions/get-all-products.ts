@@ -2,9 +2,9 @@
 
 import { db } from '..'
 
-export async function getProduct() {
+export async function getAllProducts() {
   try {
-    const product = await db.query.products.findFirst({
+    const product = await db.query.products.findMany({
       with: {
         productImages: true,
         productTags: true,

@@ -21,6 +21,7 @@ export const createProduct = action
         categoryId,
         productTags: tags,
         productImages: newImgs,
+        attachment,
       },
     }) => {
       try {
@@ -32,7 +33,13 @@ export const createProduct = action
 
           const editedProduct = await db
             .update(products)
-            .set({ description, title, categoryId, slug: slugify(title) })
+            .set({
+              description,
+              title,
+              categoryId,
+              slug: slugify(title),
+              attachment,
+            })
             .where(eq(products.id, id))
             .returning()
 
@@ -79,6 +86,7 @@ export const createProduct = action
               title,
               categoryId,
               slug: slugify(title),
+              attachment,
             })
             .returning()
 

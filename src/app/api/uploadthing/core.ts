@@ -13,6 +13,11 @@ export const ourFileRouter = {
   }).onUploadComplete(async ({ metadata, file }) => {
     console.log(metadata)
   }),
+  attachmentUploader: f({ pdf: { maxFileSize: '4MB' } }).onUploadComplete(
+    async ({ metadata, file }) => {
+      console.log(metadata)
+    }
+  ),
 } satisfies FileRouter
 
 export type OurFileRouter = typeof ourFileRouter

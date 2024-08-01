@@ -4,7 +4,7 @@ import { ProductSchema } from '@/types/product-schema'
 import { createSafeActionClient } from 'next-safe-action'
 import { db } from '..'
 import { eq } from 'drizzle-orm'
-import { products } from '../schema'
+import { productImages, products, productTags } from '../schema'
 import { z } from 'zod'
 import { revalidatePath } from 'next/cache'
 
@@ -18,6 +18,9 @@ export const deleteProduct = action
         .delete(products)
         .where(eq(products.id, id))
         .returning()
+
+      await db.delete(productImages).where(eq(productImages.productId, id))
+      await db.delete(productTags).where(eq(productTags.productId, id))
 
       revalidatePath('/studio/products')
 

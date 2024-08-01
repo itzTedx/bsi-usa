@@ -21,7 +21,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog'
-import { Button } from '@/components/ui/button'
+import { Button, buttonVariants } from '@/components/ui/button'
 import {
   Card,
   CardContent,
@@ -62,6 +62,7 @@ import {
 } from '@/components/ui/dialog'
 import { Input } from '@/components/ui/input'
 
+import { UploadButton } from '@/app/api/uploadthing/upload'
 import ImageUpload from './image-upload'
 import { InputTags } from './input-tags'
 import { CategoryForm } from '../../categories/new/category-form'
@@ -71,6 +72,7 @@ import { ProductSchema, zProductSchema } from '@/types/product-schema'
 import { createProduct } from '@/server/actions/create-product'
 import { deleteProduct } from '@/server/actions/delete-product'
 import { getProduct } from '@/server/actions/get-product'
+import Link from 'next/link'
 
 export const ProductForm = ({
   data,
@@ -98,6 +100,7 @@ export const ProductForm = ({
         const id = parseInt(editMode)
         form.setValue('title', success.title)
         form.setValue('description', success.description)
+        form.setValue('attachment', success.attachment!)
         form.setValue('id', success.id)
         form.setValue('productImages', success.productImages)
         form.setValue('categoryId', success.categoryId)
@@ -118,6 +121,7 @@ export const ProductForm = ({
 
   const router = useRouter()
   const [loading, setLoading] = useState(false)
+  const [avatarUpload, setAvatarUpload] = useState(false)
 
   const form = useForm<zProductSchema>({
     resolver: zodResolver(ProductSchema),
@@ -301,6 +305,64 @@ export const ProductForm = ({
             />
 
             <ImageUpload />
+
+            <FormField
+              control={form.control}
+              name="attachment"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Attachment</FormLabel>
+                  <div className="flex gap-4">
+                    {form.getValues('attachment') ? (
+                      <Link
+                        href={form.getValues('attachment')!}
+                        className={cn(buttonVariants())}
+                        target="_blank"
+                      >
+                        View
+                      </Link>
+                    ) : null}
+
+                    <UploadButton
+                      className="scale-90 ut-button:bg-primary/75 hover:ut-button:bg-primary/100 ut-button:transitions-all ut-label:hidden ut-allowed-content:hidden ut-button:ring-primary ut-button:w-fit ut-button:px-4 focus-within:ut-button:ring-offset-background"
+                      endpoint="attachmentUploader"
+                      onUploadBegin={() => {
+                        setAvatarUpload(true)
+                      }}
+                      onUploadError={(error) => {
+                        form.setError('attachment', {
+                          type: 'validate',
+                          message: error.message,
+                        })
+                        setAvatarUpload(false)
+                        return
+                      }}
+                      onClientUploadComplete={(res) => {
+                        form.setValue('attachment', res[0].url!)
+                        setAvatarUpload(false)
+                        return
+                      }}
+                      content={{
+                        button({ ready }) {
+                          if (ready) return <div>Upload Attachment</div>
+                          return <div>Uploading...</div>
+                        },
+                      }}
+                    />
+                  </div>
+                  <FormControl>
+                    <Input
+                      type="hidden"
+                      placeholder="User image"
+                      {...field}
+                      disabled={status === 'executing'}
+                    />
+                  </FormControl>
+
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
             <FormField
               control={form.control}

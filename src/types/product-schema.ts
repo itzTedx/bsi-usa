@@ -11,6 +11,7 @@ export const ProductSchema = z.object({
   editMode: z.boolean().optional(),
   categoryId: z.number(),
   productTags: z.array(z.string()).optional(),
+  attachment: z.optional(z.string()),
   productImages: z.array(
     z.object(
       {

@@ -128,6 +128,7 @@ export const products = pgTable('products', {
   description: text('description').notNull(),
   createdAt: timestamp('createdAt').defaultNow(),
   slug: text('slug').notNull(),
+  attachment: text('attachment'),
 
   categoryId: integer('categoryId').notNull(),
 })
@@ -146,7 +147,7 @@ export const productImages = pgTable('product_images', {
 
 export const productTags = pgTable('product_tags', {
   id: serial('id').primaryKey(),
-  tag: text('url').notNull(),
+  tag: text('tag').notNull(),
 
   productId: serial('productId')
     .notNull()
