@@ -7,11 +7,9 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
-import { deleteProduct } from '@/server/actions/delete-product'
 import { ColumnDef, Row } from '@tanstack/react-table'
 import { MoreHorizontal } from 'lucide-react'
 import { useAction } from 'next-safe-action/hooks'
-import Image from 'next/image'
 import { toast } from 'sonner'
 
 import {
@@ -25,6 +23,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog'
+import { deleteCategory } from '@/server/actions/delete-category'
 import Link from 'next/link'
 
 type CategoryColumn = {
@@ -35,7 +34,7 @@ type CategoryColumn = {
 }
 
 const ActionCell = ({ row }: { row: Row<CategoryColumn> }) => {
-  const { execute, status } = useAction(deleteProduct, {
+  const { execute, status } = useAction(deleteCategory, {
     onSuccess: ({ data }) => {
       if (data?.success) toast.success(data.success)
       if (data?.error) toast.error(data.error)

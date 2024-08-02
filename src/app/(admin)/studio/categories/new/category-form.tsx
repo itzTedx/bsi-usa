@@ -32,7 +32,7 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { createCategory } from '@/server/actions/create-category'
-import { getProduct } from '@/server/actions/get-product'
+import { getCategory } from '@/server/actions/get-category'
 import { CategorySchema, zCategorySchema } from '@/types/category-schema'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Loader, Trash } from 'lucide-react'
@@ -41,7 +41,7 @@ import { useRouter, useSearchParams } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { toast } from 'sonner'
 import { z } from 'zod'
-import { getCategory } from '@/server/actions/get-category'
+import { deleteCategory } from '@/server/actions/delete-category'
 
 export const CategoryForm = ({ goBack = true }: { goBack?: boolean }) => {
   const searchParams = useSearchParams()
@@ -107,6 +107,16 @@ export const CategoryForm = ({ goBack = true }: { goBack?: boolean }) => {
     },
   })
 
+  const { execute: deleteExistingCategory } = useAction(deleteCategory, {
+    onSuccess: ({ data }) => {
+      if (data?.success) {
+        router.push('/studio/categories')
+        toast.success(data.success)
+      }
+      if (data?.error) toast.error(data.error)
+    },
+  })
+
   function onSubmit(values: z.infer<typeof CategorySchema>) {
     execute(values)
   }
@@ -142,7 +152,9 @@ export const CategoryForm = ({ goBack = true }: { goBack?: boolean }) => {
               </AlertDialogHeader>
               <AlertDialogFooter>
                 <AlertDialogCancel>Cancel</AlertDialogCancel>
-                <AlertDialogAction onClick={() => {}}>Delete</AlertDialogAction>
+                <AlertDialogAction  onClick={() =>
+                    deleteExistingCategory({ id: parseInt(editMode) })
+                  }>Delete</AlertDialogAction>
               </AlertDialogFooter>
             </AlertDialogContent>
           </AlertDialog>
