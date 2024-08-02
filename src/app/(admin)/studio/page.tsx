@@ -27,7 +27,7 @@ export default async function Home() {
     },
   })
 
-  console.log(products)
+  // console.log(session)
 
   const categories = await db.query.categories.findMany()
 
