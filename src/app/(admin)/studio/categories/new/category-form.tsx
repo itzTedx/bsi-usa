@@ -122,7 +122,7 @@ export const CategoryForm = ({ goBack = true }: { goBack?: boolean }) => {
   }
 
   return (
-    <Card className="w-full overflow-hidden xl:w-1/2 border-none">
+    <Card className="w-full overflow-hidden border-none">
       <CardHeader className="p-1 pb-3 flex flex-row justify-between">
         <div className="">
           <CardTitle>
