@@ -13,7 +13,7 @@ export default function Socials() {
       onClick={() =>
         signIn('google', {
           redirect: false,
-          callbackUrl: '/',
+          callbackUrl: '/studio',
         })
       }
     >
