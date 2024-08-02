@@ -46,20 +46,22 @@ export default function LoginForms() {
   const [success, setSuccess] = useState('')
   const [showTwoFactor, setShowTwoFactor] = useState(false)
 
-  const { execute, status } = useAction(emailSignIn, {
-    onSuccess(data) {
-      if (data.data?.error) setError(data.data?.error)
-      if (data.data?.twoFactor) {
+  const { execute, status, result } = useAction(emailSignIn, {
+    onSuccess({ data }) {
+      console.log(data)
+      if (data?.error) setError(data?.error)
+      if (data?.twoFactor) {
         setShowTwoFactor(true)
       }
-      if (data.data?.success) setSuccess(data.data?.success)
-      router.push('/studio')
+      if (data?.success) setSuccess(data?.success)
+      // router.push('/studio')
     },
   })
 
   function onSubmit(values: z.infer<typeof LoginSchema>) {
     execute(values)
   }
+  console.log(showTwoFactor)
 
   return (
     <div className="container grid place-content-center mt-14">

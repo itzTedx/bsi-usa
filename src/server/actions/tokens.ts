@@ -44,7 +44,9 @@ export const generateVerificationToken = async (email: string) => {
 }
 
 export const verifyEmailToken = async (token: string) => {
+  //checking for existing token in database
   const existingToken = await getVerificationTokenByEmail(token)
+  //if token exists in db then return a error
   if (!existingToken) return { error: 'Token not found' }
 
   const hasExpired = new Date(existingToken.expires) < new Date()
@@ -54,10 +56,13 @@ export const verifyEmailToken = async (token: string) => {
     where: eq(users.email, existingToken.email),
   })
   if (!existingUser) return { error: 'Email does not exists' }
-  await db.update(users).set({
-    emailVerified: new Date(),
-    email: existingToken.email,
-  })
+  await db
+    .update(users)
+    .set({
+      emailVerified: new Date(),
+      email: existingToken.email,
+    })
+    .where(eq(users.email, existingToken.email))
 
   await db.delete(emailTokens).where(eq(emailTokens.id, existingToken.id))
   return { success: 'Email Verified' }
@@ -128,10 +133,10 @@ export const getTwoFactorTokenByEmail = async (email: string) => {
 
 export const getTwoFactorTokenByToken = async (token: string) => {
   try {
-    const passwordResetToken = await db.query.twoFactorTokens.findFirst({
+    const twoFactorToken = await db.query.twoFactorTokens.findFirst({
       where: eq(twoFactorTokens.token, token),
     })
-    return passwordResetToken
+    return twoFactorToken
   } catch {
     return null
   }

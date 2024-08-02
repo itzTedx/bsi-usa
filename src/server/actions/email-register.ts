@@ -14,10 +14,10 @@ const action = createSafeActionClient()
 export const emailRegister = action
   .schema(RegisterSchema)
   .action(async ({ parsedInput: { email, password, name } }) => {
-    //Hashed Password
+    //Hashing password with bcrypt
     const hashedPassword = await bcrypt.hash(password, 10)
-    console.log(hashedPassword)
 
+    //checking for existing user
     const existingUser = await db.query.users.findFirst({
       where: eq(users.email, email),
     })
@@ -37,6 +37,7 @@ export const emailRegister = action
 
       return { error: 'Email already in use' }
     }
+
     //Logic for when the user is not registered
     await db.insert(users).values({
       email,

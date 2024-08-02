@@ -41,6 +41,7 @@ export const emailSignIn = action
       }
 
       if (existingUser?.twoFactorEnabled && existingUser.email) {
+        console.log('two factor true')
         if (code) {
           const twoFactorToken = await getTwoFactorTokenByEmail(
             existingUser.email
@@ -60,23 +61,29 @@ export const emailSignIn = action
           await db
             .delete(twoFactorTokens)
             .where(eq(twoFactorTokens.id, twoFactorToken.id))
-        }
-      } else {
-        if (!existingUser) {
-          return { error: 'User not found' }
-        }
-        const token = await generateTwoFactorToken(existingUser.email)
-        if (!token) {
-          return { error: 'Token not generated!' }
-        }
-        await sendTwoFactorTokenByEmail(token[0].email, token[0].token)
 
-        return { twoFactor: 'Two Factor Token sent' }
+          const existingConfirmation = await getTwoFactorTokenByEmail(
+            existingUser.email
+          )
+          if (existingConfirmation) {
+            await db
+              .delete(twoFactorTokens)
+              .where(eq(twoFactorTokens.email, existingUser.email))
+          }
+        } else {
+          const token = await generateTwoFactorToken(existingUser.email)
+          if (!token) {
+            return { error: 'Token not generated!' }
+          }
+          await sendTwoFactorTokenByEmail(token[0].email, token[0].token)
+
+          return { twoFactor: 'Two Factor Token sent' }
+        }
       }
 
       await signIn('credentials', { email, password, redirectTo: '/studio' })
 
-      return { success: email }
+      return { success: 'Successfully signed in' }
     } catch (error) {
       console.log(error)
       if (error instanceof AuthError) {

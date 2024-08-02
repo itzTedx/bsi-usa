@@ -43,6 +43,8 @@ export default function SettingsCard(session: SessionType) {
   const [success, setSuccess] = useState<string | undefined>(undefined)
   const [avatarUpload, setAvatarUpload] = useState(false)
 
+  console.log(session)
+
   const form = useForm<z.infer<typeof SettingSchema>>({
     resolver: zodResolver(SettingSchema),
     defaultValues: {
