@@ -5,6 +5,7 @@ import { Navbar } from '@/components/layout/Navbar'
 import { cn } from '@/lib/utils'
 import Footer from '@/components/layout/Footer'
 import { TailwindIndicator } from './_components/breakpointTW'
+import FloatingWhatsapp from '@/components/floating-whatsapp'
 
 const poppins = Poppins({
   subsets: ['latin'],
@@ -26,7 +27,8 @@ export default function RootLayout({
     <html lang="en">
       <body className={cn(poppins.className, 'w-screen overflow-x-hidden')}>
         <Navbar />
-        <main className="sm:-mt-7 -z-10">{children}</main>
+        <main className="md:-mt-7 -z-10">{children}</main>
+        <FloatingWhatsapp />
         <TailwindIndicator />
         <Footer />
       </body>

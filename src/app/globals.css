@@ -2,6 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
+/* * {
+  box-sizing: border-box;
+  background-color: rgba(0, 255, 0, 0.2);
+  outline: 1px solid black;
+} */
+
 @layer base {
   :root {
     --background: 0 0% 100%;

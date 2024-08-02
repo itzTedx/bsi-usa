@@ -3,13 +3,13 @@ import Image from 'next/image'
 
 function About() {
   return (
-    <section className="grid sm:grid-cols-2 gap-14 items-center my-9 max-w-6xl mx-auto p-6">
-      <div className="aspect-square flex-shrink-0 relative">
+    <section className="grid items-center max-w-6xl p-6 mx-auto md:grid-cols-2 gap-14 my-9">
+      <div className="relative flex-shrink-0 aspect-square">
         <Image src="/about-rec.png" fill alt="" />
       </div>
       <div className="">
         <h5 className="text-3xl font-bold text-rose-600">About Us</h5>
-        <p className="text-balance mt-3 leading-7">
+        <p className="mt-3 leading-7 text-balance">
           At Builders Solutions Inc, we hold a profound belief: the pursuit of
           &apos;better&apos; is not a solitary endeavor, but a collaborative
           journey fueled by shared opportunities. With a steadfast commitment to
