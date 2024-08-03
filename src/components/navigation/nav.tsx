@@ -1,12 +1,13 @@
 import { auth } from '@/server/auth'
 import { LogIn } from 'lucide-react'
 import Link from 'next/link'
-import { Button } from '../ui/button'
+import { Button, buttonVariants } from '../ui/button'
 import UserButton from './user-button'
 
 import { ThemeToggle } from '../ui/theme-toggle-button'
 import Sidebar from './sidebar'
 import SidebarMob from './sidebar-mob'
+import { cn } from '@/lib/utils'
 
 export default async function Nav({ children }: { children: React.ReactNode }) {
   const session = await auth()
@@ -31,6 +32,12 @@ export default async function Nav({ children }: { children: React.ReactNode }) {
               </form> */}
             </div>
             <div className="flex items-center gap-4">
+              <Link
+                href="/"
+                className={cn(buttonVariants({ variant: 'secondary' }))}
+              >
+                Live Website
+              </Link>
               <ThemeToggle />
               {!session ? (
                 <Button asChild>

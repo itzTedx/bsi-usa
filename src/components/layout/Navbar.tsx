@@ -8,7 +8,7 @@ import ChipTabs from './tabs'
 import { FloatingNav } from './Floating-Navbar'
 import { Home, LayoutList, UsersRound } from 'lucide-react'
 import Image from 'next/image'
-import { usePathname } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 import { cn } from '@/lib/utils'
 
 export const Navbar = () => {
@@ -41,6 +41,7 @@ export const Navbar = () => {
   ]
 
   const pathname = usePathname()
+  const router = useRouter()
 
   return (
     <>
@@ -80,6 +81,7 @@ export const Navbar = () => {
         <button
           className="absolute group/btn hidden md:flex space-x-2 items-center justify-center px-4 text-black rounded-md h-10 right-2 font-medium shadow-input bg-foreground dark:shadow-[0px_0px_1px_1px_var(--neutral-800)] "
           type="submit"
+          onClick={() => router.push('/contact')}
         >
           <span className="text-sm font-bold tracking-wide uppercase text-background">
             Enquire Now

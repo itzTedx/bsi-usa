@@ -1,21 +1,26 @@
+import { Icons } from '@/components/icons'
+
 function Experience() {
   const EXPItems = [
     {
       title: 'High Quality',
-      desc: 'To provide the highest level of quality construction services to our customers at reasonable and market-competitive prices.',
+      desc: 'We are committed to delivering excellence. Our mission is to provide our customers with the highest quality construction services at competitive prices. Your satisfaction and the integrity of our work are our top priorities.',
+      icon: <Icons.medal />,
     },
     {
       title: 'Satisfaction',
-      desc: 'To ensure the longevity of our company through repeat and referral business achieved through customer satisfaction in all areas, including timeliness, attention to detail, and service-minded attitudes.',
+      desc: `Customer satisfaction is the cornerstone of our success. We are dedicated to fostering long-term relationships by consistently exceeding expectations. Your satisfaction is not just a goal; it${"'"}s our promise.`,
+      icon: <Icons.satisfaction />,
     },
     {
       title: 'Team Work',
-      desc: 'To maintain the highest levels of professionalism, integrity,honesty, and fairness in our relationships with our suppliers, subcontractors, professional associates, and customers.',
+      desc: 'We believe in the power of teamwork and integrity. We uphold the highest standards of professionalism and fairness. By fostering trust and collaboration, we ensure mutual success and excellence.',
+      icon: <Icons.team />,
     },
   ]
 
   return (
-    <section className="container">
+    <section className="max-w-6xl mx-auto px-3">
       <div>
         <span className="text-sm tracking-widest uppercase">
           We provide you
@@ -26,9 +31,13 @@ function Experience() {
       </div>
       <div className="grid gap-8 mt-8 md:grid-cols-3">
         {EXPItems.map((item) => (
-          <div className="p-8 border rounded-md border-accent" key={item.title}>
-            <h6 className="text-xl font-bold uppercase mt-9">{item.title}</h6>
-            <p className="mt-3 text-muted-foreground">{item.desc}</p>
+          <div
+            className="p-8 border rounded-md border-accent space-y-3"
+            key={item.title}
+          >
+            {item.icon}
+            <h6 className="text-xl font-bold uppercase">{item.title}</h6>
+            <p className=" text-muted-foreground">{item.desc}</p>
           </div>
         ))}
       </div>

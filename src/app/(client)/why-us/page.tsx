@@ -27,7 +27,7 @@ const WhyPage = () => {
         <h2 className="text-2xl">
           Why Choose <span className="font-bold">Builders Solutions Inc.?</span>
         </h2>
-        <p>
+        <p className="text-balance">
           Building success, globally, requires a reliable partner who
           understands your vision and the complexities of international
           construction. At Builders Solutions Inc., we offer more than just
@@ -37,15 +37,15 @@ const WhyPage = () => {
       </div>
       <section className="mb-9 max-w-5xl mx-auto grid gap-9 px-5 md:px-0">
         <h3 className="text-rose-600 font-bold text-3xl">
-          We deliver excellence
+          We Deliver Excellence
         </h3>
         {whyUs.map(({ title, desc }) => (
           <div
             key={title}
             className="p-6 border-rose-600 rounded-lg border hover:bg-rose-100 transition-colors"
           >
-            <h4 className="font-bold mb-2 text-lg">{title}</h4>
-            <p>{desc}</p>
+            <h4 className="font-bold mb-2 text-xl">{title}</h4>
+            <p className="text-balance">{desc}</p>
           </div>
         ))}
       </section>

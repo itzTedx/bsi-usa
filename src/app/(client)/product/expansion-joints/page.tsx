@@ -1,14 +1,16 @@
-import { Button } from "@/components/ui/button";
-import Image from "next/image";
-import React from "react";
+import { Button } from '@/components/ui/button'
+import { ArrowLeftCircle } from 'lucide-react'
+import Image from 'next/image'
+import Link from 'next/link'
+import React from 'react'
 
 const ExpansionJoints = () => {
   return (
     <div>
-      <h2 className="w-full h-60 bg-blue-950 text-white about-billboard grid place-content-center text-6xl font-bold">
+      <h1 className="w-full md:h-60 h-16 bg-blue-950 text-white about-billboard grid place-content-center text-2xl md:text-6xl font-bold px-4 md:px-0 leading-snug">
         Parking Expansion Joints
-      </h2>
-      <div className="grid grid-cols-2 gap-3">
+      </h1>
+      <div className="grid md:grid-cols-2 gap-3">
         <div className="relative aspect-[4/3]">
           <Image
             src="/images/products/parking-exp-hi.jpg"
@@ -18,10 +20,13 @@ const ExpansionJoints = () => {
           />
         </div>
         <div className="space-y-4 my-9 px-9">
-          <div className="flex gap-3 items-center font-semibold mb-3">
-            <Image src="/back-arrow.svg" height={30} width={30} alt="" />
+          <Link
+            href="/categories"
+            className="flex gap-3 items-center font-semibold mb-3"
+          >
+            <ArrowLeftCircle />
             Back to Products
-          </div>
+          </Link>
           <p>
             This wall + ceiling expansion joint system is surface mounted which
             means it&apos;s perfect for renovations, retrofits and additions.
@@ -47,11 +52,11 @@ const ExpansionJoints = () => {
             <li> Clear anodized finish</li>
           </ul>
           <p>Snap-fit design for easy on-site assembly</p>
-          <Button>Order Now</Button>
+          <Button>Enquire Now</Button>
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default ExpansionJoints;
+export default ExpansionJoints

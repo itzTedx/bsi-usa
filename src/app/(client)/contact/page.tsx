@@ -85,7 +85,7 @@ const ContactPage = () => {
               name="name"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Name</FormLabel>
+                  <FormLabel className="text-background">Name</FormLabel>
                   <FormControl>
                     <Input placeholder="John" type="text" {...field} />
                   </FormControl>
@@ -98,7 +98,7 @@ const ContactPage = () => {
               name="email"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Email</FormLabel>
+                  <FormLabel className="text-background">Email</FormLabel>
                   <FormControl>
                     <Input placeholder="me@mail.com" type="email" {...field} />
                   </FormControl>
@@ -111,7 +111,7 @@ const ContactPage = () => {
               name="contact"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Contact No.</FormLabel>
+                  <FormLabel className="text-background">Contact No.</FormLabel>
                   <FormControl>
                     <Input placeholder="+987 654 3210" type="tel" {...field} />
                   </FormControl>
@@ -124,7 +124,7 @@ const ContactPage = () => {
               name="company"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Company</FormLabel>
+                  <FormLabel className="text-background">Company</FormLabel>
                   <FormControl>
                     <Input placeholder="John" {...field} />
                   </FormControl>
@@ -137,7 +137,9 @@ const ContactPage = () => {
               name="message"
               render={({ field }) => (
                 <FormItem className="col-span-full">
-                  <FormLabel>Project Details</FormLabel>
+                  <FormLabel className="text-background">
+                    Project Details
+                  </FormLabel>
                   <FormControl>
                     <Textarea
                       placeholder="Type your message here."

@@ -1,8 +1,52 @@
-import { AspectRatio } from '@/components/ui/aspect-ratio'
-import { Card, CardContent, CardFooter } from '@/components/ui/card'
-import Image from 'next/image'
-import Link from 'next/link'
-import React from 'react'
+import ProductCard from '../_components/product-card'
+
+const TEMP_CATEGORIES = [
+  {
+    title: 'Expansion Joints',
+    image: '/images/expansion-joints.jpg',
+    link: '/categories/expansion-joints',
+  },
+  {
+    title: 'Movement Joints',
+    image: '/movement-joints 1.png',
+    link: '/categories/expansion-joints',
+  },
+  {
+    title: 'Tile Trims',
+    image: '/images/tile-trims.jpg',
+    link: '/categories/expansion-joints',
+  },
+  {
+    title: 'Carpet Trims',
+    image: '/images/carpet-trims.jpg',
+    link: '/categories/expansion-joints',
+  },
+  {
+    title: 'Skirting',
+    image: '/images/skirting.jpg',
+    link: '/categories/expansion-joints',
+  },
+  {
+    title: 'Stair Nosing',
+    image: '/images/stair-nosing.jpg',
+    link: '/categories/expansion-joints',
+  },
+  {
+    title: 'Wall Gaurds',
+    image: '/images/Wall Gaurds.jpg',
+    link: '/categories/expansion-joints',
+  },
+  {
+    title: 'Silent Pods',
+    image: '/images/Silent Pods.jpg',
+    link: '/categories/expansion-joints',
+  },
+  {
+    title: 'Solar Skylights',
+    image: '/images/Solar Skylights.jpg',
+    link: '/categories/expansion-joints',
+  },
+]
 
 const ProductsPage = () => {
   return (
@@ -10,168 +54,10 @@ const ProductsPage = () => {
       <h2 className="w-full h-60 bg-blue-950 text-white about-billboard grid place-content-center text-6xl font-bold px-6 md:px-0">
         Product Categories
       </h2>
-      <div className="grid sm:grid-cols-2 lg:grid-cols-3 container my-16">
-        <Card>
-          <Link href="/categories/expansion-joints">
-            <CardContent>
-              <AspectRatio ratio={4 / 3}>
-                <Image
-                  src="/images/expansion-joints.jpg"
-                  alt="Image"
-                  fill
-                  className="rounded-md object-cover border border-black"
-                />
-              </AspectRatio>
-            </CardContent>
-            <CardFooter>
-              <p>Expansion Joints</p>
-            </CardFooter>
-          </Link>
-        </Card>
-
-        <Card>
-          <Link href="/">
-            <CardContent>
-              <AspectRatio ratio={4 / 3}>
-                <Image
-                  src="/movement-joints 1.png"
-                  alt="Image"
-                  fill
-                  className="rounded-md object-cover border border-black"
-                />
-              </AspectRatio>
-            </CardContent>
-            <CardFooter>
-              <p>Movement Joints</p>
-            </CardFooter>
-          </Link>
-        </Card>
-
-        <Card>
-          <Link href="/">
-            <CardContent>
-              <AspectRatio ratio={4 / 3}>
-                <Image
-                  src="/images/tile-trims.jpg"
-                  alt="Image"
-                  fill
-                  className="rounded-md object-cover border border-black"
-                />
-              </AspectRatio>
-            </CardContent>
-            <CardFooter>
-              <p>Tile Trims</p>
-            </CardFooter>
-          </Link>
-        </Card>
-
-        <Card>
-          <Link href="/">
-            <CardContent>
-              <AspectRatio ratio={4 / 3}>
-                <Image
-                  src="/images/carpet-trims.jpg"
-                  alt="Image"
-                  fill
-                  className="rounded-md object-cover border border-black"
-                />
-              </AspectRatio>
-            </CardContent>
-            <CardFooter>
-              <p>Carpet Trims</p>
-            </CardFooter>
-          </Link>
-        </Card>
-
-        <Card>
-          <Link href="/">
-            <CardContent>
-              <AspectRatio ratio={4 / 3}>
-                <Image
-                  src="/images/skirting.jpg"
-                  alt="Image"
-                  fill
-                  className="rounded-md object-cover border border-black"
-                />
-              </AspectRatio>
-            </CardContent>
-            <CardFooter>
-              <p>Skirting</p>
-            </CardFooter>
-          </Link>
-        </Card>
-
-        <Card>
-          <Link href="/">
-            <CardContent>
-              <AspectRatio ratio={4 / 3}>
-                <Image
-                  src="/images/stair-nosing.jpg"
-                  alt="Image"
-                  fill
-                  className="rounded-md object-cover border border-black"
-                />
-              </AspectRatio>
-            </CardContent>
-            <CardFooter>
-              <p>Stair Nosing</p>
-            </CardFooter>
-          </Link>
-        </Card>
-
-        <Card>
-          <Link href="/">
-            <CardContent>
-              <AspectRatio ratio={4 / 3}>
-                <Image
-                  src="/images/Wall Gaurds.jpg"
-                  alt="Image"
-                  fill
-                  className="rounded-md object-cover border border-black"
-                />
-              </AspectRatio>
-            </CardContent>
-            <CardFooter>
-              <p>Wall Gaurds</p>
-            </CardFooter>
-          </Link>
-        </Card>
-
-        <Card>
-          <Link href="/">
-            <CardContent>
-              <AspectRatio ratio={4 / 3}>
-                <Image
-                  src="/images/Silent Pods.jpg"
-                  alt="Image"
-                  fill
-                  className="rounded-md object-cover border border-black"
-                />
-              </AspectRatio>
-            </CardContent>
-            <CardFooter>
-              <p>Silent Pods</p>
-            </CardFooter>
-          </Link>
-        </Card>
-
-        <Card>
-          <Link href="/">
-            <CardContent>
-              <AspectRatio ratio={4 / 3}>
-                <Image
-                  src="/images/Solar Skylights.jpg"
-                  alt="Image"
-                  fill
-                  className="rounded-md object-cover border border-black"
-                />
-              </AspectRatio>
-            </CardContent>
-            <CardFooter>
-              <p>Solar Skylights</p>
-            </CardFooter>
-          </Link>
-        </Card>
+      <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 container gap-6 my-9 md:my-16">
+        {TEMP_CATEGORIES.map((product, i) => (
+          <ProductCard key={i} product={product!} />
+        ))}
       </div>
     </section>
   )
