@@ -41,7 +41,6 @@ export const Navbar = () => {
   ]
 
   const pathname = usePathname()
-  console.log(pathname)
 
   return (
     <>

@@ -48,7 +48,6 @@ export default function LoginForms() {
 
   const { execute, status, result } = useAction(emailSignIn, {
     onSuccess({ data }) {
-      console.log(data)
       if (data?.error) setError(data?.error)
       if (data?.twoFactor) {
         setShowTwoFactor(true)
@@ -61,7 +60,6 @@ export default function LoginForms() {
   function onSubmit(values: z.infer<typeof LoginSchema>) {
     execute(values)
   }
-  console.log(showTwoFactor)
 
   return (
     <div className="container grid place-content-center mt-14">

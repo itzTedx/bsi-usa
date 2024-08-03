@@ -10,7 +10,7 @@ const domain = getBaseURL()
 export const sendVerificationEmail = async (email: string, token: string) => {
   const confirmLink = `${domain}/auth/new-verification?token=${token}`
   const { data, error } = await resend.emails.send({
-    from: 'BSI <onboarding@digitaldesk.ae>',
+    from: 'BSI <onboarding@bsi-usa.com>',
     to: email,
     subject: 'BSI - Confirmation Link',
     html: `<p>Click to <a href='${confirmLink}'>confirm your email.</a></p>`,
@@ -26,7 +26,7 @@ export const sendVerificationEmail = async (email: string, token: string) => {
 export const sendPasswordResetEmail = async (email: string, token: string) => {
   const confirmLink = `${domain}/auth/new-password?token=${token}`
   const { data, error } = await resend.emails.send({
-    from: 'BSI <onboarding@digitaldesk.ae>',
+    from: 'BSI <onboarding@bsi-usa.com>',
     to: email,
     subject: 'BSI - Password Reset Link',
     html: `<p>Click here to <a href='${confirmLink}'>reset your password.</a></p>`,
@@ -42,7 +42,7 @@ export const sendTwoFactorTokenByEmail = async (
   token: string
 ) => {
   const { data, error } = await resend.emails.send({
-    from: 'BSI <onboarding@digitaldesk.ae>',
+    from: 'BSI <onboarding@bsi-usa.com>',
     to: email,
     subject: 'BSI - Your two factor token',
     html: `<p>Your Confirmation Code: ${token}</p>`,
@@ -63,8 +63,8 @@ export const getEnquiryInContact = async (
   message: string
 ) => {
   const { data, error } = await resend.emails.send({
-    from: 'BSI <onboarding@digitaldesk.ae>',
-    to: 'info@bsi-usa.com',
+    from: 'BSI <onboarding@bsi-usa.com>',
+    to: 'melwinafs@gmail.com',
     subject: `Enquiry from ${name}`,
     html: `<p>${message}</p>`,
   })

@@ -1,5 +1,7 @@
-import { Button } from '@/components/ui/button'
+import { Button, buttonVariants } from '@/components/ui/button'
+import { cn } from '@/lib/utils'
 import Image from 'next/image'
+import Link from 'next/link'
 
 function About() {
   return (
@@ -26,9 +28,19 @@ function About() {
           pave the way for a future where people and buildings thrive together,
           united by the pursuit of better.
         </p>
-        <div className="flex gap-6 mt-3">
-          <Button variant="primary">More</Button>
-          <Button variant="outline">Contact us</Button>
+        <div className="flex gap-4 mt-3">
+          <Link
+            href="/about"
+            className={buttonVariants({ variant: 'primary' })}
+          >
+            More
+          </Link>
+          <Link
+            href="/contact"
+            className={buttonVariants({ variant: 'outline' })}
+          >
+            Contact us
+          </Link>
         </div>
       </div>
     </section>

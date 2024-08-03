@@ -11,6 +11,7 @@ import {
   FormField,
   FormItem,
   FormLabel,
+  FormMessage,
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
@@ -18,6 +19,8 @@ import { ContactSchema, zContactSchema } from '@/types/contact-schema'
 import { useAction } from 'next-safe-action/hooks'
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
+import { sendContactEnquiry } from '@/server/actions/send-contact-enquiry'
+import { toast } from 'sonner'
 
 const formSchema = z.object({
   name: z.string().min(2, {
@@ -44,28 +47,27 @@ const ContactPage = () => {
   const router = useRouter()
   const [loading, setLoading] = useState(false)
 
-  // const { execute, status } = useAction(createProduct, {
-  //   onExecute: () => {
-  //     setLoading(true)
-  //   },
-  //   onSuccess: ({ data }) => {
-  //     // if (data?.success) {
-  //     //   router.push('/studio/products')
-  //     //   toast.success(data.success)
-  //     //   setLoading(false)
-  //     // }
-  //   },
+  const { execute, status } = useAction(sendContactEnquiry, {
+    onExecute: () => {
+      setLoading(true)
+    },
+    onSuccess: ({ data }) => {
+      if (data?.success) {
+        router.refresh()
+        toast.success(data.success)
+        setLoading(false)
+      }
+    },
 
-  //   onError: (error) => {
-  //     console.log(error)
-  //     setLoading(false)
-  //   },
-  // })
-  
+    onError: (error) => {
+      console.log(error)
+      setLoading(false)
+    },
+  })
 
   // 2. Define a submit handler.
   function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values)
+    execute(values)
   }
   return (
     <>
@@ -85,8 +87,9 @@ const ContactPage = () => {
                 <FormItem>
                   <FormLabel>Name</FormLabel>
                   <FormControl>
-                    <Input placeholder="John" {...field} />
+                    <Input placeholder="John" type="text" {...field} />
                   </FormControl>
+                  <FormMessage className="text-background" />
                 </FormItem>
               )}
             />
@@ -97,8 +100,9 @@ const ContactPage = () => {
                 <FormItem>
                   <FormLabel>Email</FormLabel>
                   <FormControl>
-                    <Input placeholder="me@mail.com" {...field} />
+                    <Input placeholder="me@mail.com" type="email" {...field} />
                   </FormControl>
+                  <FormMessage className="text-background" />
                 </FormItem>
               )}
             />
@@ -109,8 +113,9 @@ const ContactPage = () => {
                 <FormItem>
                   <FormLabel>Contact No.</FormLabel>
                   <FormControl>
-                    <Input placeholder="+987 654 3210" {...field} />
+                    <Input placeholder="+987 654 3210" type="tel" {...field} />
                   </FormControl>
+                  <FormMessage className="text-background" />
                 </FormItem>
               )}
             />
@@ -123,6 +128,7 @@ const ContactPage = () => {
                   <FormControl>
                     <Input placeholder="John" {...field} />
                   </FormControl>
+                  <FormMessage className="text-background" />
                 </FormItem>
               )}
             />
@@ -139,6 +145,7 @@ const ContactPage = () => {
                       {...field}
                     />
                   </FormControl>
+                  <FormMessage className="text-background" />
                 </FormItem>
               )}
             />
