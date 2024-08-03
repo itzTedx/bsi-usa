@@ -14,6 +14,10 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
+import { ContactSchema, zContactSchema } from '@/types/contact-schema'
+import { useAction } from 'next-safe-action/hooks'
+import { useState } from 'react'
+import { useRouter } from 'next/navigation'
 
 const formSchema = z.object({
   name: z.string().min(2, {
@@ -26,9 +30,8 @@ const formSchema = z.object({
 })
 
 const ContactPage = () => {
-  // 1. Define your form.
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<zContactSchema>({
+    resolver: zodResolver(ContactSchema),
     defaultValues: {
       name: '',
       email: '',
@@ -37,6 +40,28 @@ const ContactPage = () => {
       message: '',
     },
   })
+
+  const router = useRouter()
+  const [loading, setLoading] = useState(false)
+
+  // const { execute, status } = useAction(createProduct, {
+  //   onExecute: () => {
+  //     setLoading(true)
+  //   },
+  //   onSuccess: ({ data }) => {
+  //     // if (data?.success) {
+  //     //   router.push('/studio/products')
+  //     //   toast.success(data.success)
+  //     //   setLoading(false)
+  //     // }
+  //   },
+
+  //   onError: (error) => {
+  //     console.log(error)
+  //     setLoading(false)
+  //   },
+  // })
+  
 
   // 2. Define a submit handler.
   function onSubmit(values: z.infer<typeof formSchema>) {

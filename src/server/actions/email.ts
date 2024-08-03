@@ -2,6 +2,7 @@
 
 import getBaseURL from '@/lib/base-url'
 import { Resend } from 'resend'
+import { string } from 'zod'
 
 const resend = new Resend(process.env.RESEND_API_KEY)
 const domain = getBaseURL()
@@ -45,6 +46,27 @@ export const sendTwoFactorTokenByEmail = async (
     to: email,
     subject: 'BSI - Your two factor token',
     html: `<p>Your Confirmation Code: ${token}</p>`,
+  })
+
+  if (error) {
+    return console.log(error)
+  }
+
+  if (data) return data
+}
+
+export const getEnquiryInContact = async (
+  name: string,
+  email: string,
+  contact: string,
+  company: string,
+  message: string
+) => {
+  const { data, error } = await resend.emails.send({
+    from: 'BSI <onboarding@digitaldesk.ae>',
+    to: 'info@bsi-usa.com',
+    subject: `Enquiry from ${name}`,
+    html: `<p>${message}</p>`,
   })
 
   if (error) {
