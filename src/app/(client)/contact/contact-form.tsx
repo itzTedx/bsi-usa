@@ -32,7 +32,7 @@ const formSchema = z.object({
   message: z.string().min(1).max(256, 'Exceed the limit'),
 })
 
-const ContactForm = () => {
+export default function ContactForm() {
   const form = useForm<zContactSchema>({
     resolver: zodResolver(ContactSchema),
     defaultValues: {
@@ -169,5 +169,3 @@ const ContactForm = () => {
     </>
   )
 }
-
-export default ContactForm
