@@ -20,6 +20,7 @@ const SidebarMob = () => {
         <Button variant="outline" size="icon" className="shrink-0 md:hidden">
           <Menu className="h-5 w-5" />
           <span className="sr-only">Toggle navigation menu</span>
+          <Logo />
         </Button>
       </SheetTrigger>
       <SheetContent side="bottom" className="flex flex-col">

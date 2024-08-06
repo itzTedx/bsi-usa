@@ -41,7 +41,7 @@ export const emailSignIn = action
       }
 
       if (existingUser?.twoFactorEnabled && existingUser.email) {
-        console.log('two factor true')
+      
         if (code) {
           const twoFactorToken = await getTwoFactorTokenByEmail(
             existingUser.email
