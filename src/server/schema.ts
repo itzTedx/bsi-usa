@@ -182,13 +182,12 @@ export const productTagsRelations = relations(productTags, ({ many, one }) => ({
   }),
 }))
 
-// export const categoryProductRelations = relations(
-//   products,
-//   ({ many, one }) => ({
-//     products: one(products, {
-//       fields: [categories.productId],
-//       references: [products.id],
-//       relationName: 'category',
-//     }),
-//   })
-// )
+//Carousel Schema
+export const carousel = pgTable('carousel', {
+  id: serial('id').primaryKey(),
+  title: text('title').notNull(),
+  description: text('description').notNull(),
+  imgUrl: text('image_url').notNull(),
+
+  order: real('order').notNull(),
+})

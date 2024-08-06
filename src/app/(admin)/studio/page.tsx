@@ -34,33 +34,54 @@ export default async function Home() {
       <div className="flex items-center">
         <h1 className="text-lg font-semibold md:text-2xl">Dashboard</h1>
       </div>
-      <div className="sm:border sm:border-dashed rounded-lg shadow-sm p-3 sm:p-6">
+      <div className="sm:border sm:border-dashed rounded-lg shadow-sm p-0 sm:p-6">
         <h2 className="mb-3">Quick Links</h2>
-        <div className="grid grid-cols-2 gap-6">
+        <div className="grid grid-cols-2 gap-2 sm:gap-6">
           <Link href="/studio/products">
             <Card className="hover:bg-muted transition-all flex justify-between group p-3">
               <CardHeader>
-                <CardTitle>Products</CardTitle>
-                <CardDescription>Manage your products</CardDescription>
+                <CardTitle className="text-lg sm:text-xl">Products</CardTitle>
+                <CardDescription className="text-xs sm:text-base">
+                  Manage your products
+                </CardDescription>
               </CardHeader>
               <ArrowUpRight className="text-muted-foreground m-2 group-hover:rotate-45 transition-all" />
             </Card>
           </Link>
-          <Link href="/studio/products">
+          <Link href="/studio/categories">
             <Card className="hover:bg-muted transition-all flex justify-between group p-3">
               <CardHeader>
-                <CardTitle>Categories</CardTitle>
-                <CardDescription>Manage your categories</CardDescription>
+                <CardTitle className="text-lg sm:text-xl">Categories</CardTitle>
+                <CardDescription className="text-xs sm:text-base">
+                  Manage your categories
+                </CardDescription>
               </CardHeader>
               <ArrowUpRight className="text-muted-foreground m-2 group-hover:rotate-45 transition-all" />
             </Card>
           </Link>
         </div>
+        <section className="mt-3 space-y-3">
+          <Card className="p-3">
+            <CardHeader>
+              <CardTitle className="text-lg sm:text-xl">
+                Featured Banner
+              </CardTitle>
+              <CardDescription className="text-xs sm:text-base">
+                Manage Carousel in homepage
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="grid grid-cols-2 md:grid-cols-3 gap-3">
+              h1
+            </CardContent>
+          </Card>
+        </section>
         <h2 className="mt-6 mb-3">Categories</h2>
         <Card className="p-3">
           <CardHeader>
-            <CardTitle>Categories</CardTitle>
-            <CardDescription>Manage your categories</CardDescription>
+            <CardTitle className="text-lg sm:text-xl">Categories</CardTitle>
+            <CardDescription className="text-xs sm:text-base">
+              Manage your categories
+            </CardDescription>
           </CardHeader>
           <CardContent className="grid grid-cols-2 md:grid-cols-3 gap-3">
             {categories.map((category) => (
@@ -89,8 +110,10 @@ export default async function Home() {
         <h2 className="mt-6 mb-3">Products</h2>
         <Card className="mt-3 p-3">
           <CardHeader>
-            <CardTitle>Products</CardTitle>
-            <CardDescription>Manage your products</CardDescription>
+            <CardTitle className="text-lg sm:text-xl">Products</CardTitle>
+            <CardDescription className="text-xs sm:text-base">
+              Manage your products
+            </CardDescription>
           </CardHeader>
           <CardContent className="grid grid-cols-2 md:grid-cols-3 gap-3">
             {products.map((product) => (
@@ -100,7 +123,7 @@ export default async function Home() {
               >
                 <CardHeader className="flex flex-row gap-3">
                   <div className="relative size-14">
-                    {product.productImages.length !== 0 && (
+                    {product.productImages && (
                       <Image
                         src={product.productImages[0].url}
                         fill
@@ -113,7 +136,9 @@ export default async function Home() {
                     <CardTitle className="font-medium text-base">
                       {product.title}
                     </CardTitle>
-                    <CardDescription>{product.category.title}</CardDescription>
+                    <CardDescription className="text-xs sm:text-base">
+                      {product.category.title}
+                    </CardDescription>
                   </div>
                 </CardHeader>
               </Card>

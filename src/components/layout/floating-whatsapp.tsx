@@ -16,9 +16,10 @@ import {
   PopoverTrigger,
 } from '@/components/ui/popover'
 import { getCurrentTime } from '@/lib/utils'
-import { Icons } from './icons'
+import { Icons } from '../icons'
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
+import { LogoSVG } from '../logo'
 
 export default function FloatingWhatsapp() {
   const [showMessage, setShowMessage] = useState(false)
@@ -69,7 +70,8 @@ export default function FloatingWhatsapp() {
         >
           <Card className="border-0">
             <CardHeader className="flex flex-row gap-3 bg-rose-700 text-background">
-              <div className="relative bg-blue-500 rounded-full size-16">
+              <div className="relative bg-blue-50 rounded-full size-16 flex">
+                <LogoSVG className="p-1.5" />
                 <span className="absolute flex w-3 h-3 bottom-1 right-1">
                   <span className="absolute inline-flex w-full h-full bg-green-400 rounded-full opacity-75 animate-ping" />
                   <span className="relative inline-flex w-3 h-3 bg-green-500 rounded-full" />

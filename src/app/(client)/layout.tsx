@@ -5,7 +5,7 @@ import { Navbar } from '@/components/layout/Navbar'
 import { cn } from '@/lib/utils'
 import Footer from '@/components/layout/Footer'
 import { TailwindIndicator } from './_components/breakpointTW'
-import FloatingWhatsapp from '@/components/floating-whatsapp'
+import FloatingWhatsapp from '@/components/layout/floating-whatsapp'
 
 const poppins = Poppins({
   subsets: ['latin'],

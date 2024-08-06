@@ -1,5 +1,10 @@
-import { Home, LineChart, Package } from 'lucide-react'
-import { FcFlowChart } from 'react-icons/fc'
+import {
+  Component,
+  GalleryThumbnails,
+  Home,
+  LineChart,
+  Package,
+} from 'lucide-react'
 
 export const NAV_LINKS = [
   {
@@ -10,12 +15,17 @@ export const NAV_LINKS = [
   {
     title: 'Categories',
     href: '/studio/categories',
-    icon: <FcFlowChart className="h-4 w-4" />,
+    icon: <Component className="h-4 w-4" />,
   },
   {
     title: 'Products',
     href: '/studio/products',
     icon: <Package className="h-4 w-4" />,
+  },
+  {
+    title: 'Carousel',
+    href: '/studio/carousel',
+    icon: <GalleryThumbnails className="h-4 w-4" />,
   },
   {
     title: 'Analytics',

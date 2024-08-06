@@ -3,7 +3,7 @@
 import { ArrowRight, Menu } from 'lucide-react'
 import Link from 'next/link'
 import { NAV_LINKS } from '../../lib/nav-links'
-import Logo from '../logo'
+import Logo, { LogoSVG } from '../logo'
 import { Sheet, SheetContent, SheetTrigger } from '../ui/sheet'
 import { Button } from '../ui/button'
 import { useState } from 'react'
@@ -20,7 +20,6 @@ const SidebarMob = () => {
         <Button variant="outline" size="icon" className="shrink-0 md:hidden">
           <Menu className="h-5 w-5" />
           <span className="sr-only">Toggle navigation menu</span>
-          <Logo />
         </Button>
       </SheetTrigger>
       <SheetContent side="bottom" className="flex flex-col">
