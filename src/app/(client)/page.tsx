@@ -4,11 +4,14 @@ import Billboard from './_components/billboard'
 import Categories from './_components/categories'
 import Experience from './_components/experience'
 import Products from './_components/products'
+import { db } from '@/server'
 
-export default function Home() {
+export default async function Home() {
+  const carousel = await db.query.carousel.findMany()
+
   return (
     <>
-      <Billboard />
+      <Billboard data={carousel} />
       <About />
       <Explore head="EXPLORE OUR" text="Products" />
       <Categories />

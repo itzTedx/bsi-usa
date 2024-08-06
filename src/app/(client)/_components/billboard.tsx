@@ -13,7 +13,17 @@ import { cn } from '@/lib/utils'
 import Image from 'next/image'
 import React from 'react'
 
-function Billboard() {
+interface BillboardProps {
+  data: {
+    id: number
+    title: string
+    description: string
+    order: number
+    imgUrl: string
+  }[]
+}
+
+function Billboard({ data }: BillboardProps) {
   const [api, setApi] = React.useState<CarouselApi>()
   const [current, setCurrent] = React.useState(0)
   const [count, setCount] = React.useState(0)
@@ -45,7 +55,30 @@ function Billboard() {
         ]}
       >
         <CarouselContent>
-          {Array.from({ length: 5 }).map((_, index) => (
+          {data.map((carousel) => (
+            <CarouselItem key={carousel.id}>
+              <div className="text-background grid lg:grid-cols-2 lg:h-[90dvh] overflow-hidden px-6 pt-4 sm:px-12 sm:pt-9 md:p-0 gap-9 md:gap-3">
+                <div className="grid gap-3 mx-auto sm:gap-4 place-content-center md:max-w-2xl">
+                  <h1 className="p-3 text-lg font-semibold text-center sm:text-4xl xl:text-5xl sm:text-left bg-rose-800/70 sm:bg-transparent h-fit sm:h-auto sm:p-0">
+                    {carousel.title}
+                  </h1>
+
+                  <p className="text-[16px] font-light leading-normal tracking-wide text-center lg:text-2xl text-balance sm:text-base sm:text-justify lg:mt-9">
+                    {carousel.description}
+                  </p>
+                </div>
+                <div className="relative aspect-square">
+                  <Image
+                    src={carousel.imgUrl}
+                    fill
+                    className="overflow-hidden rounded-xl"
+                    alt={carousel.title}
+                  />
+                </div>
+              </div>
+            </CarouselItem>
+          ))}
+          {/* {Array.from({ length: 5 }).map((_, index) => (
             <CarouselItem key={index}>
               <div className="text-background grid lg:grid-cols-2 lg:h-[90dvh] overflow-hidden px-6 pt-4 sm:px-12 sm:pt-9 md:p-0 gap-9 md:gap-3">
                 <div className="grid gap-3 mx-auto sm:gap-4 place-content-center md:max-w-2xl">
@@ -70,7 +103,7 @@ function Billboard() {
                 </div>
               </div>
             </CarouselItem>
-          ))}
+          ))} */}
         </CarouselContent>
         <div className="container bottom-0 flex justify-between py-3 md:absolute">
           <div className="flex gap-2">

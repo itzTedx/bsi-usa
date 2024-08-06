@@ -1,8 +1,11 @@
 import { Button } from '@/components/ui/button'
 import CarouselForm from './carousel-form'
 import Link from 'next/link'
+import { db } from '@/server'
 
-export default function Carousels() {
+export default async function Carousels() {
+  const prevCarousel = await db.query.carousel.findMany()
+
   return (
     <>
       <div className="flex items-center justify-between">
@@ -12,7 +15,7 @@ export default function Carousels() {
         </Button>
       </div>
       <div className="flex flex-1 p-0 md:border md:border-dashed sm:shadow-sm md:p-6 sm:rounded-lg">
-        <CarouselForm />
+        <CarouselForm data={prevCarousel} />
       </div>
     </>
   )

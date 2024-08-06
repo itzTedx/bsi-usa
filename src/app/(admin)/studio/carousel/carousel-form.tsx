@@ -7,13 +7,11 @@ import {
   FormControl,
   FormField,
   FormItem,
-  FormLabel,
   FormMessage,
 } from '@/components/ui/form'
 import {
   Table,
   TableBody,
-  TableCaption,
   TableCell,
   TableHead,
   TableHeader,
@@ -24,13 +22,26 @@ import { Input } from '@/components/ui/input'
 import { createProduct } from '@/server/actions/create-product'
 import { CarouselSchema, zCarouselSchema } from '@/types/carousel-schema'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { AlignJustify } from 'lucide-react'
+import { AlignJustify, Trash } from 'lucide-react'
 import { useAction } from 'next-safe-action/hooks'
-import { useState } from 'react'
-import { useFieldArray, useForm } from 'react-hook-form'
 import Image from 'next/image'
+import { useState } from 'react'
+import { useForm } from 'react-hook-form'
+import { toast } from 'sonner'
+import { createCarousel } from '@/server/actions/create-carousel'
+import { deleteCarousel } from '@/server/actions/delete-carousel'
 
-export default function CarouselForm() {
+interface CarouselProps {
+  data: {
+    id: number
+    title: string
+    description: string
+    imgUrl: string
+    order: number
+  }[]
+}
+
+export default function CarouselForm({ data }: CarouselProps) {
   const [active, setActive] = useState(0)
 
   const form = useForm<zCarouselSchema>({
@@ -41,11 +52,31 @@ export default function CarouselForm() {
     },
   })
 
-  const { execute, status } = useAction(createProduct, {})
+  const { execute, status } = useAction(createCarousel, {
+    onSuccess: ({ data }) => {
+      if (data?.success) {
+        // router.push('/studio/products')
+        console.log(data.success)
+        toast.success(data.success)
+      }
+      if (data?.error) toast.error(data.error)
+    },
+    onError: (data) => {
+      console.log(data)
+    },
+  })
 
   function onSubmit(values: zCarouselSchema) {
     console.log(values)
+    execute(values)
   }
+
+  const { execute: deleteItem } = useAction(deleteCarousel, {
+    onSuccess: ({ data }) => {
+      if (data?.success) toast.success(data.success)
+      if (data?.error) toast.error(data.error)
+    },
+  })
 
   return (
     <Form {...form}>
@@ -60,6 +91,34 @@ export default function CarouselForm() {
             </TableRow>
           </TableHeader>
           <TableBody>
+            {data.map((car) => (
+              <TableRow key={car.id}>
+                <TableCell>
+                  <AlignJustify />
+                </TableCell>
+                <TableCell>
+                  <span>{car.title}</span>
+                </TableCell>
+                <TableCell>
+                  <span>{car.description}</span>
+                </TableCell>
+                <TableCell className="flex gap-3 items-center">
+                  <div className="relative size-12 rounded overflow-hidden">
+                    <Image src={car.imgUrl} fill alt="" className="" />
+                  </div>
+                  <Button
+                    size={'icon'}
+                    variant={'secondary'}
+                    onClick={(e) => {
+                      e.preventDefault()
+                      deleteItem({ id: car.id })
+                    }}
+                  >
+                    <Trash className="p-0.5" />
+                  </Button>
+                </TableCell>
+              </TableRow>
+            ))}
             <TableRow>
               <TableCell>
                 <AlignJustify />
@@ -97,14 +156,14 @@ export default function CarouselForm() {
               <TableCell>
                 <FormField
                   control={form.control}
-                  name="imageUrl"
+                  name="imgUrl"
                   render={({ field }) => (
                     <FormItem>
                       <div className="flex items-center gap-2">
-                        {form.getValues('imageUrl') && (
+                        {form.getValues('imgUrl') && (
                           <div className="relative size-12 rounded overflow-hidden">
                             <Image
-                              src={form.getValues('imageUrl')}
+                              src={form.getValues('imgUrl')}
                               fill
                               alt=""
                               className=""
@@ -119,7 +178,7 @@ export default function CarouselForm() {
                             //   setAvatarUpload(true)
                           }}
                           onUploadError={(error) => {
-                            form.setError('imageUrl', {
+                            form.setError('imgUrl', {
                               type: 'validate',
                               message: error.message,
                             })
@@ -127,7 +186,7 @@ export default function CarouselForm() {
                             return
                           }}
                           onClientUploadComplete={(res) => {
-                            form.setValue('imageUrl', res[0].url!)
+                            form.setValue('imgUrl', res[0].url!)
                             //   setAvatarUpload(false)
                             return
                           }}
@@ -157,7 +216,9 @@ export default function CarouselForm() {
           </TableBody>
         </Table>
 
-        <Button type="submit">Submit</Button>
+        <Button disabled={status === 'executing'} type="submit">
+          Submit
+        </Button>
       </form>
     </Form>
   )
