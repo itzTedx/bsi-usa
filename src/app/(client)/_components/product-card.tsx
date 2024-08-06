@@ -15,7 +15,7 @@ interface ProductCardProps {
 
 export default function ProductCard({ product }: ProductCardProps) {
   return (
-    <Card className="rounded-lg overflow-hidden">
+    <Card className="rounded-lg overflow-hidden group hover:scale-105 hover:shadow-xl transition-all">
       <Link href={product.link}>
         <CardContent className="p-0">
           <AspectRatio ratio={4 / 3}>

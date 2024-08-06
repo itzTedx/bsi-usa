@@ -7,7 +7,7 @@ const products = [
     name: 'Building Solutions',
     description:
       'Ensure structural longevity with expansion joints, tile movement joints, and trims.',
-    imageUrl: '/bs.jpg',
+    imageUrl: '/images/bs.jpg',
     href: '/categories',
   },
   {

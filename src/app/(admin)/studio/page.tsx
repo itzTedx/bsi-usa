@@ -29,6 +29,8 @@ export default async function Home() {
 
   const categories = await db.query.categories.findMany()
 
+  const banner = await db.query.carousel.findMany()
+
   return (
     <>
       <div className="flex items-center">
@@ -62,16 +64,41 @@ export default async function Home() {
         </div>
         <section className="mt-3 space-y-3">
           <Card className="p-3">
-            <CardHeader>
-              <CardTitle className="text-lg sm:text-xl">
-                Featured Banner
-              </CardTitle>
-              <CardDescription className="text-xs sm:text-base">
-                Manage Carousel in homepage
-              </CardDescription>
-            </CardHeader>
+            <div className="flex justify-between group">
+              <CardHeader>
+                <CardTitle className="text-lg sm:text-xl">
+                  Featured Banner
+                </CardTitle>
+                <CardDescription className="text-xs sm:text-base">
+                  Manage Carousel in homepage
+                </CardDescription>
+              </CardHeader>
+              <ArrowUpRight className="text-muted-foreground m-2 group-hover:rotate-45 transition-all" />
+            </div>
             <CardContent className="grid grid-cols-2 md:grid-cols-3 gap-3">
-              h1
+              {banner.map((carousel) => (
+                <Card
+                  className="p-3 relative bg-transparent group"
+                  key={carousel.id}
+                >
+                  <CardHeader className="z-50 relative">
+                    <CardTitle className="text-lg sm:text-xl line-clamp-2">
+                      {carousel.title}
+                    </CardTitle>
+                    <CardDescription className="text-xs sm:text-base line-clamp-4">
+                      {carousel.description}
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent className="p-0 opacity-10 transition-all duration-500 group-hover:opacity-30">
+                    <Image
+                      src={carousel.imgUrl}
+                      fill
+                      alt=""
+                      className="object-cover"
+                    />
+                  </CardContent>
+                </Card>
+              ))}
             </CardContent>
           </Card>
         </section>

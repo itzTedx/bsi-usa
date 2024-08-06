@@ -49,7 +49,7 @@ export const Navbar = () => {
       <div className="grid w-full my-2 place-content-center">
         <Link href="/" className="px-3 sm:px-12 xl:px-0">
           <Image
-            src="/bsi-logo-full.svg"
+            src="/icons/bsi-logo-full.svg"
             width={990}
             height={100}
             alt="BSI Logo"

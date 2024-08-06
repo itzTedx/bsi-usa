@@ -60,7 +60,7 @@ export default function FloatingWhatsapp() {
     <div className="fixed bottom-3 right-3 z-[99999999]">
       <Popover>
         <PopoverTrigger onClick={handleClick}>
-          <div className="bg-green-500 rounded-full size-14">
+          <div className="bg-green-500 rounded-full size-14 shadow-lg">
             <Icons.whatsapp className="fill-white scale-[.65]" />
           </div>
         </PopoverTrigger>

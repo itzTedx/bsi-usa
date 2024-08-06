@@ -1,11 +1,14 @@
-import type { Metadata } from 'next'
+import type { Metadata, Viewport } from 'next'
 import { Poppins } from 'next/font/google'
 import './globals.css'
-import { Navbar } from '@/components/layout/Navbar'
 import { cn } from '@/lib/utils'
+
+import { Navbar } from '@/components/layout/Navbar'
 import Footer from '@/components/layout/Footer'
 import { TailwindIndicator } from './_components/breakpointTW'
 import FloatingWhatsapp from '@/components/layout/floating-whatsapp'
+
+import { siteConfig } from '@/config/site'
 
 const poppins = Poppins({
   subsets: ['latin'],
@@ -13,9 +16,46 @@ const poppins = Poppins({
 })
 
 export const metadata: Metadata = {
-  title: 'Builder Solutions - Construction Services & Specialty Materials.',
-  description:
-    'Builders Solutions Inc. is a leading international trading company specializing in the construction industry. We bridge the gap between businesses across the globe, facilitating seamless trade of high-quality building materials.',
+  title: siteConfig.name,
+  description: siteConfig.description,
+  authors: [
+    {
+      name: siteConfig.name,
+      url: siteConfig.url,
+    },
+  ],
+  openGraph: {
+    type: 'website',
+    locale: 'en_AE',
+    alternateLocale: 'en_US',
+    url: siteConfig.url,
+    title: siteConfig.name,
+    description: siteConfig.description,
+    siteName: siteConfig.name,
+    images: [siteConfig.ogImage],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: siteConfig.name,
+    description: siteConfig.description,
+    images: [siteConfig.ogImage],
+    creator: '@digitaldesk_uae',
+  },
+  icons: {
+    icon: '/favicon.ico',
+    shortcut: '/favicon-16x16.png',
+    apple: '/apple-touch-icon.png',
+  },
+  metadataBase: new URL(siteConfig.url),
+  alternates: { canonical: '/' },
+  manifest: `${siteConfig.url}/site.webmanifest`,
+}
+
+export const viewport: Viewport = {
+  themeColor: [
+    { media: '(prefers-color-scheme: light)', color: 'white' },
+    { media: '(prefers-color-scheme: dark)', color: 'black' },
+  ],
 }
 
 export default function RootLayout({
@@ -27,7 +67,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={cn(poppins.className, 'w-screen overflow-x-hidden')}>
         <Navbar />
-        <main className="md:-mt-7 -z-10">{children}</main>
+        <main className="lg:-mt-7 -z-10">{children}</main>
         <FloatingWhatsapp />
         <TailwindIndicator />
         <Footer />

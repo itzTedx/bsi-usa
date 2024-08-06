@@ -10,13 +10,13 @@ export default async function Home() {
   const carousel = await db.query.carousel.findMany()
 
   return (
-    <>
+    <section className="space-y-24">
       <Billboard data={carousel} />
       <About />
       <Explore head="EXPLORE OUR" text="Products" />
       <Categories />
       <Experience />
       <Products />
-    </>
+    </section>
   )
 }

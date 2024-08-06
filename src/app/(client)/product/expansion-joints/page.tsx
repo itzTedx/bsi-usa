@@ -3,12 +3,14 @@ import { ArrowLeftCircle } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
+import EnquireButton from '../_components/enquire-button'
 
 const ExpansionJoints = () => {
+  const PRODUCT_TITLE = 'Parking Expansion Joints'
   return (
     <div>
       <h1 className="w-full md:h-60 h-16 bg-blue-950 text-white about-billboard grid place-content-center text-2xl md:text-6xl font-bold px-4 md:px-0 leading-snug">
-        Parking Expansion Joints
+        {PRODUCT_TITLE}
       </h1>
       <div className="grid md:grid-cols-2 gap-3">
         <div className="relative aspect-[4/3]">
@@ -52,7 +54,7 @@ const ExpansionJoints = () => {
             <li> Clear anodized finish</li>
           </ul>
           <p>Snap-fit design for easy on-site assembly</p>
-          <Button>Enquire Now</Button>
+          <EnquireButton product={PRODUCT_TITLE} />
         </div>
       </div>
     </div>

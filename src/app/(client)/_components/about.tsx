@@ -7,7 +7,7 @@ function About() {
   return (
     <section className="grid items-center max-w-6xl p-6 mx-auto md:grid-cols-2 gap-14 my-9">
       <div className="relative flex-shrink-0 aspect-square">
-        <Image src="/about-rec.png" fill alt="" />
+        <Image src="/images/about-rec.png" fill alt="" />
       </div>
       <div className="">
         <h5 className="text-3xl font-bold text-rose-600">About Us</h5>
