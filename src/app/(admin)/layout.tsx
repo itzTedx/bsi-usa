@@ -3,6 +3,7 @@ import { Poppins } from 'next/font/google'
 import './globals.css'
 import { Metadata, Viewport } from 'next'
 import { siteConfig } from '@/config/site'
+import NextTopLoader from 'nextjs-toploader'
 
 const poppins = Poppins({
   subsets: ['latin'],
@@ -32,7 +33,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={cn(poppins.className)}>{children}</body>
+      <body className={cn(poppins.className)}>
+        <NextTopLoader zIndex={99999999} />
+        {children}
+      </body>
     </html>
   )
 }

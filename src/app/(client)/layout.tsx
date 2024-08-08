@@ -3,6 +3,7 @@ import { Poppins } from 'next/font/google'
 import './globals.css'
 import { cn } from '@/lib/utils'
 
+import NextTopLoader from 'nextjs-toploader'
 import { Navbar } from '@/components/layout/Navbar'
 import Footer from '@/components/layout/Footer'
 import { TailwindIndicator } from './_components/breakpointTW'
@@ -66,6 +67,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={cn(poppins.className, 'w-screen overflow-x-hidden')}>
+        <NextTopLoader />
         <Navbar />
         <main className="lg:-mt-7 -z-10">{children}</main>
         <FloatingWhatsapp />
