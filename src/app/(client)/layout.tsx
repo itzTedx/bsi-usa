@@ -66,6 +66,13 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
+      <head>
+        <script
+          defer
+          src="https://analytics.alliedgulf.me/script.js"
+          data-website-id="53f5bb02-a7cc-4cc8-9c9a-e8fcb1287746"
+        ></script>
+      </head>
       <body className={cn(poppins.className, 'w-screen overflow-x-hidden')}>
         <NextTopLoader />
         <Navbar />
